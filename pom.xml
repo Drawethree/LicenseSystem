@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>LicenseSystem</name>
-	<description>Bachelor Thesis -</description>
+	<description>Bachelor Thesis</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
