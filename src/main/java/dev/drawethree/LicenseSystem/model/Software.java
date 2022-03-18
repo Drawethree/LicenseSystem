@@ -1,44 +1,49 @@
-package dev.drawethree.LicenseSystem.model;
+package dev.drawethree.licensesystem.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@Entity(name = "Software")
+@Entity
+@Table(name = "software")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
-@AllArgsConstructor
 public class Software {
 
 	@Id
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
 
-	@Column(nullable = false, unique = true)
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
-	@Column(nullable = false)
+	@Column(name = "description", nullable = false)
 	private String description;
 
+	@Column(name = "created_at", nullable = false)
+	private LocalDateTime createdAt;
+
 	@OrderBy("id desc")
-	@OneToMany(mappedBy = "software")
+	@OneToMany(mappedBy = "software",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@ToString.Exclude
 	private List<License> licenses;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-		Software software = (Software) o;
-		return id != null && Objects.equals(id, software.id);
+	public Software(String name, String description) {
+		this.name = name;
+		this.description = description;
 	}
 
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
+	public void addLicense(License license) {
+		if (licenses == null) {
+			licenses = new ArrayList<>();
+		}
+		licenses.add(license);
 	}
+
 }

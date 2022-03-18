@@ -1,37 +1,49 @@
-package dev.drawethree.LicenseSystem.model;
+package dev.drawethree.licensesystem.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "License")
-@Data
+@Entity
+@Table(name = "license")
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class License {
 
-	@Column(nullable = false)
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-	@ManyToOne
-	@JoinColumn(name="software_id", nullable=false)
-	private Software software;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "software_id", nullable = false)
+    private Software software;
 
-	@Column(nullable = false, unique = true)
-	private String licenseKey;
+    @Column(name = "license_key", nullable = false, unique = true)
+    private String licenseKey;
 
-	@Column(nullable=false)
-	private String licenseUser;
+    @Column(nullable = false)
+    private String licenseUser;
 
-	@Column(nullable=false)
-	private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-	private LocalDateTime expiresAt;
+    @Column(name = "expires_at")
+    private LocalDateTime expiresAt;
 
-	@Column(name = "status_id")
-	@Enumerated
-	private LicenseStatus status;
+    @Column(name = "status_id")
+    @Enumerated(EnumType.ORDINAL)
+    private LicenseStatus status;
+
+
+    public boolean isActive() {
+        return LicenseStatus.ACTIVE == status;
+    }
+
+    public boolean isExpired() {
+        return LicenseStatus.EXPIRED == status;
+    }
 }
