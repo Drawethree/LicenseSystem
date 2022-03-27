@@ -1,4 +1,4 @@
-package dev.drawethree.LicenseSystem;
+package dev.drawethree.licensesystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

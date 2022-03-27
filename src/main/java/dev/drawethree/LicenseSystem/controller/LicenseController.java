@@ -1,46 +1,48 @@
-package dev.drawethree.LicenseSystem.controller;
+package dev.drawethree.licensesystem.controller;
 
-import dev.drawethree.LicenseSystem.model.License;
-import dev.drawethree.LicenseSystem.model.Software;
-import dev.drawethree.LicenseSystem.repo.LicenseRepository;
-import dev.drawethree.LicenseSystem.service.LicenseKeyGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import dev.drawethree.licensesystem.model.License;
+import dev.drawethree.licensesystem.model.LicenseStatus;
+import dev.drawethree.licensesystem.model.Software;
+import dev.drawethree.licensesystem.service.LicenseService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@RestController
-@RequestMapping(path = "/api/license") // This means URL's start with /demo (after Application path)
+@Controller
+@RequestMapping("/license")
 public class LicenseController {
 
-	@Autowired
-	private LicenseRepository licenseRepository;
+    private final LicenseService licenseService;
 
-	@PostMapping(path = "/new") // Map ONLY POST Requests
-	public @ResponseBody
-	License createNewLicense(@RequestParam String userName
-			, @RequestParam Software software) {
-		License license = new License();
+    public LicenseController(LicenseService licenseService) {
+        this.licenseService = licenseService;
+    }
 
-		license.setCreatedAt(LocalDateTime.now());
-		license.setLicenseUser(userName);
-		license.setLicenseKey(LicenseKeyGenerator.generateNewLicenseKey());
-		license.setSoftware(software);
 
-		licenseRepository.save(license);
-		return license;
-	}
+    @GetMapping("/create")
+    public String createNewLicense(@ModelAttribute("software") Software software, Model model) {
 
-	@GetMapping(path = "/{id}")
-	public @ResponseBody
-	License getById(@RequestParam Integer id) {
-		return licenseRepository.getById(id);
-	}
+        License license = new License();
+        license.setSoftware(software);
+        license.setStatus(LicenseStatus.WAITING_FOR_ACTIVATION);
 
-	@GetMapping(path = "/all")
-	public @ResponseBody
-	List<License> getAllLicense() {
-		return licenseRepository.findAll();
-	}
+        model.addAttribute("software", software);
+        model.addAttribute("license", license);
+
+        return "license/create-license";
+    }
+
+    @PostMapping("/save")
+    public String saveLicense(@ModelAttribute("license") License license) {
+        license.setCreatedAt(LocalDateTime.now());
+        licenseService.save(license);
+        return "redirect:/software/licenses/?softwareId=" + license.getSoftware().getId();
+    }
+
+
 }

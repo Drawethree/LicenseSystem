@@ -1,40 +1,72 @@
-package dev.drawethree.LicenseSystem.controller;
+package dev.drawethree.licensesystem.controller;
 
-import dev.drawethree.LicenseSystem.model.Software;
-import dev.drawethree.LicenseSystem.repo.SoftwareRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.drawethree.licensesystem.model.Software;
+import dev.drawethree.licensesystem.service.SoftwareService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "/software") // This means URL's start with /demo (after Application path)
+@Controller
+@RequestMapping("/software")
 public class SoftwareController {
 
-	@Autowired
-	private SoftwareRepository softwareRepository;
 
-	@PostMapping(path = "/new") // Map ONLY POST Requests
-	public @ResponseBody
-	Software createNewSoftware(@RequestParam String name, String description) {
-		Software sw = new Software();
+    private final SoftwareService softwareService;
 
-		sw.setName(name);
-		sw.setDescription(description);
+    public SoftwareController(SoftwareService softwareService) {
+        this.softwareService = softwareService;
+    }
 
-		softwareRepository.save(sw);
-		return sw;
-	}
 
-	@GetMapping(path = "/{id}")
-	public @ResponseBody
-	Software getById(@RequestParam Integer id) {
-		return softwareRepository.getById(id);
-	}
+    @GetMapping("/list")
+    public String viewSoftwares(Model model) {
 
-	@GetMapping(path = "/all")
-	public @ResponseBody
-	List<Software> getAllSoftwares() {
-		return softwareRepository.findAll();
-	}
+        List<Software> softwareList = this.softwareService.findAll();
+
+        model.addAttribute("softwares", softwareList);
+
+        return "software/list-software";
+    }
+
+    @GetMapping("/create")
+    public String createNewSoftware(Model model) {
+        model.addAttribute("software", new Software());
+        return "software/create-software";
+    }
+
+    @GetMapping("/update")
+    public String updateEmployee(@RequestParam("softwareId") int id, Model model) {
+        Software software = softwareService.getById(id);
+
+        model.addAttribute("software", software);
+
+        return "software/update-software";
+    }
+
+    @GetMapping("/delete")
+    public String deleteSoftware(@RequestParam("softwareId") int id) {
+        softwareService.deleteById(id);
+        return "redirect:/software/list";
+    }
+
+    @PostMapping("/save")
+    public String saveSoftware(@ModelAttribute("software") Software software) {
+        software.setCreatedAt(LocalDateTime.now());
+        softwareService.save(software);
+        return "redirect:/software/list";
+    }
+
+    @GetMapping("/licenses")
+    public String viewLicenses(@RequestParam("softwareId") int id, Model model) {
+        Software software = softwareService.getById(id);
+
+        model.addAttribute("software", software);
+
+        return "license/list-license";
+    }
+
+
 }
