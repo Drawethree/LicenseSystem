@@ -43,6 +43,5 @@ public class UserController {
     public String showLoginForm(Model model) {
         model.addAttribute("user", new User());
         return "user/login";
-
     }
 }

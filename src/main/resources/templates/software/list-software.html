@@ -30,7 +30,7 @@
         </thead>
         <tbody>
         <tr th:each="software : ${softwares}">
-            <td><img class="img" src="../../static/img/software.png" alt="Software Icon"></td>
+            <td><img class="img" src="../../static/img/logo.png" alt="Software Icon"></td>
             <td th:text="${software.name}"></td>
             <td th:text="${software.description}"></td>
             <td th:text="${#temporals.format(software.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
