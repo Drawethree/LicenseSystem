@@ -1,4 +1,4 @@
-package dev.drawethree.licensesystem.model;
+package dev.drawethree.LicenseSystem.model;
 
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class Software {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	@Column(name = "description", nullable = false)
@@ -33,6 +33,10 @@ public class Software {
 	@OneToMany(mappedBy = "software",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@ToString.Exclude
 	private List<License> licenses;
+
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 	public Software(String name, String description) {
 		this.name = name;

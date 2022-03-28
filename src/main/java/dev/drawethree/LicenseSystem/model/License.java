@@ -1,6 +1,7 @@
-package dev.drawethree.licensesystem.model;
+package dev.drawethree.LicenseSystem.model;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,18 +33,18 @@ public class License {
     private LocalDateTime createdAt;
 
     @Column(name = "expires_at")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime expiresAt;
 
     @Column(name = "status_id")
     @Enumerated(EnumType.ORDINAL)
     private LicenseStatus status;
 
-
     public boolean isActive() {
-        return LicenseStatus.ACTIVE == status;
+        return LocalDateTime.now().isBefore(this.expiresAt);
     }
 
     public boolean isExpired() {
-        return LicenseStatus.EXPIRED == status;
+        return LocalDateTime.now().isAfter(this.expiresAt);
     }
 }

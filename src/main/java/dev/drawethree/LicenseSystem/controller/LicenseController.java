@@ -1,15 +1,12 @@
-package dev.drawethree.licensesystem.controller;
+package dev.drawethree.LicenseSystem.controller;
 
-import dev.drawethree.licensesystem.model.License;
-import dev.drawethree.licensesystem.model.LicenseStatus;
-import dev.drawethree.licensesystem.model.Software;
-import dev.drawethree.licensesystem.service.LicenseService;
+import dev.drawethree.LicenseSystem.model.License;
+import dev.drawethree.LicenseSystem.model.LicenseStatus;
+import dev.drawethree.LicenseSystem.service.LicenseService;
+import dev.drawethree.LicenseSystem.utils.LicenseKeyGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -24,21 +21,16 @@ public class LicenseController {
     }
 
 
-    @GetMapping("/create")
-    public String createNewLicense(@ModelAttribute("software") Software software, Model model) {
-
-        License license = new License();
-        license.setSoftware(software);
-        license.setStatus(LicenseStatus.WAITING_FOR_ACTIVATION);
-
-        model.addAttribute("software", software);
-        model.addAttribute("license", license);
-
+    @GetMapping("/new")
+    public String createNewLicense(Model model) {
+        model.addAttribute("license",new License());
         return "license/create-license";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/created")
     public String saveLicense(@ModelAttribute("license") License license) {
+        license.setStatus(LicenseStatus.WAITING_FOR_ACTIVATION);
+        license.setLicenseKey(LicenseKeyGenerator.generateNewLicenseKey());
         license.setCreatedAt(LocalDateTime.now());
         licenseService.save(license);
         return "redirect:/software/licenses/?softwareId=" + license.getSoftware().getId();

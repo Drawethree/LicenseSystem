@@ -1,7 +1,7 @@
-package dev.drawethree.licensesystem.repository;
+package dev.drawethree.LicenseSystem.repository;
 
 
-import dev.drawethree.licensesystem.model.Software;
+import dev.drawethree.LicenseSystem.model.Software;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

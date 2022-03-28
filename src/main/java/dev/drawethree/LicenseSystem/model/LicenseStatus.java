@@ -1,4 +1,4 @@
-package dev.drawethree.licensesystem.model;
+package dev.drawethree.LicenseSystem.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

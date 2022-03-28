@@ -1,7 +1,7 @@
-package dev.drawethree.licensesystem.controller;
+package dev.drawethree.LicenseSystem.controller;
 
-import dev.drawethree.licensesystem.model.Software;
-import dev.drawethree.licensesystem.service.SoftwareService;
+import dev.drawethree.LicenseSystem.model.Software;
+import dev.drawethree.LicenseSystem.service.SoftwareService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +13,13 @@ import java.util.List;
 @RequestMapping("/software")
 public class SoftwareController {
 
-
     private final SoftwareService softwareService;
 
     public SoftwareController(SoftwareService softwareService) {
         this.softwareService = softwareService;
     }
 
-
-    @GetMapping("/list")
+    @GetMapping("/")
     public String viewSoftwares(Model model) {
 
         List<Software> softwareList = this.softwareService.findAll();
@@ -38,7 +36,7 @@ public class SoftwareController {
     }
 
     @GetMapping("/update")
-    public String updateEmployee(@RequestParam("softwareId") int id, Model model) {
+    public String updateSoftware(@RequestParam("softwareId") int id, Model model) {
         Software software = softwareService.getById(id);
 
         model.addAttribute("software", software);
@@ -49,14 +47,14 @@ public class SoftwareController {
     @GetMapping("/delete")
     public String deleteSoftware(@RequestParam("softwareId") int id) {
         softwareService.deleteById(id);
-        return "redirect:/software/list";
+        return "redirect:/software/";
     }
 
     @PostMapping("/save")
     public String saveSoftware(@ModelAttribute("software") Software software) {
         software.setCreatedAt(LocalDateTime.now());
         softwareService.save(software);
-        return "redirect:/software/list";
+        return "redirect:/software/";
     }
 
     @GetMapping("/licenses")
