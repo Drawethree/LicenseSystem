@@ -17,15 +17,15 @@
 <main class="form-login">
     <div class="container">
         <div class="col-md-12">
-
-
+            <p th:if="${loginError}" class="error">Wrong user or password</p>
+            <p th:if="${userNameTaken}" class="error">This username has been taken</p>
             <form>
-                <img class="img-fluid" src="../../static/img/logo.png" alt="" >
+                <img class="img-fluid" src="../../static/images/logo.png" alt="" >
                 <h1 class="h3 mb-3 fw-normal">Log In</h1>
 
                 <div class="form-floating">
-                    <label for="email">Username</label>
-                    <input type="email" class="form-control" id="email" placeholder="Your Username">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Your Username">
                 </div>
 
                 <div class="form-floating">
@@ -36,7 +36,7 @@
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
             </form>
             <hr/>
-            <button class="w-100 btn btn-lg btn-secondary">Back to Main Page</button>
+            <a th:href="@{/}" class="w-100 btn btn-lg btn-secondary">Back to Main Page</a>
         </div>
     </div>
 </main>

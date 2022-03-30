@@ -33,15 +33,5 @@ public class UserController {
         return "user/register_success";
     }
 
-    @GetMapping("/register")
-    public String showRegisterForm(Model model) {
-        model.addAttribute("user", new User());
-        return "user/register";
-    }
 
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("user", new User());
-        return "user/login";
-    }
 }

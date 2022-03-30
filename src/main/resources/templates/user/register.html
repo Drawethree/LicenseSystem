@@ -20,28 +20,28 @@
 
 
             <form>
-                <img class="img-fluid" src="../../static/img/logo.png" alt="" >
+                <img class="img-fluid" src="../../static/images/logo.png" alt="" >
                 <h1 class="h3 mb-3 fw-normal">Register your account</h1>
 
                 <div class="form-floating">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Your Email">
+                    <input type="email" class="form-control" id="email" placeholder="Your Email" required>
                 </div>
 
                 <div class="form-floating">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="How should we call you?">
+                    <input type="text" class="form-control" id="username" placeholder="How should we call you?" required>
                 </div>
 
                 <div class="form-floating">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Don't tell anyone!">
+                    <input type="password" class="form-control" id="password" placeholder="Don't tell anyone!" required>
                 </div>
                 <br/>
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Register Account</button>
             </form>
             <hr/>
-            <button class="w-100 btn btn-lg btn-secondary">Back to Main Page</button>
+            <a th:href="@{/}" class="w-100 btn btn-lg btn-secondary">Back to Main Page</a>
         </div>
     </div>
 </main>
