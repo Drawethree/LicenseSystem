@@ -14,31 +14,38 @@
     <title>License System - Register</title>
 </head>
 <body>
-<main class="form-login">
+<!-- Registration failed -->
+<div th:if="${register_failed_message} != null" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${register_failed_message}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<main class="form-register">
     <div class="container">
         <div class="col-md-12">
-
-
-            <form>
-                <img class="img-fluid" src="../../static/images/logo.png" alt="" >
+            <form th:action="@{/process_register}" th:object="${user}" method="post">
+                <img class="img-fluid" src="../../static/images/logo.png" alt="">
                 <h1 class="h3 mb-3 fw-normal">Register your account</h1>
 
                 <div class="form-floating">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                    <input th:field="*{email}" type="email" class="form-control" id="email" placeholder="Your Email" required>
                 </div>
 
                 <div class="form-floating">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="How should we call you?" required>
+                    <input th:field="*{userName}" type="text" class="form-control" id="username"
+                           placeholder="How should we call you?" required>
                 </div>
 
                 <div class="form-floating">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Don't tell anyone!" required>
+                    <input th:field="*{password}" type="password" class="form-control" id="password"
+                           placeholder="Don't tell anyone!" required>
                 </div>
                 <br/>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Register Account</button>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
             </form>
             <hr/>
             <a th:href="@{/}" class="w-100 btn btn-lg btn-secondary">Back to Main Page</a>

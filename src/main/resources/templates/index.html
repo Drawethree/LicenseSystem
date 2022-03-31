@@ -15,31 +15,46 @@
 </head>
 <body>
 
+
+<!-- Login Alert -->
+<div th:if="${login_success}" class="alert alert-success alert-dismissible fade show" role="alert">
+    Successfully logged in
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <main>
-    <div class="px-4 py-5 my-5 text-center">
-        <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
-        <h1 class="display-5 fw-bold">License System</h1>
-        <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">Create and Manage licenses for your premium software.</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a th:href="@{/login}" class="btn btn-primary btn-lg">Login</a>
-                <a th:href="@{/register}" class="btn btn-outline-secondary btn-lg">Register</a>
+    <div class="container">
+
+        <!-- Register Success Alert -->
+        <div th:if="${register_success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Successfully registered account! You can now login.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="px-4 py-5 my-5 text-center">
+            <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
+            <h1 class="display-5 fw-bold">License System</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">Create and Manage licenses for your premium software.</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a th:href="@{/login}" class="btn btn-primary btn-lg">Login</a>
+                    <a th:href="@{/register}" class="btn btn-outline-secondary btn-lg">Register</a>
+                </div>
             </div>
         </div>
+
+        <div class="b-example-divider"></div>
     </div>
 
     <div class="b-example-divider"></div>
 </main>
-
-<div class="b-example-divider"></div>
-
-<div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-            <span class="text-muted">&copy;Jan Kluka 2022</span>
-        </div>
-    </footer>
-</div>
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+        <span class="text-muted">&copy;Jan Kluka 2022</span>
+    </div>
+</footer>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

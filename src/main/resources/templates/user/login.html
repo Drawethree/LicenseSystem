@@ -14,23 +14,32 @@
     <title>License System - Log In</title>
 </head>
 <body>
+
+<!-- Login failed -->
+<div th:if="${login_failed_message} != null" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${login_failed_message}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <main class="form-login">
     <div class="container">
         <div class="col-md-12">
-            <p th:if="${loginError}" class="error">Wrong user or password</p>
-            <p th:if="${userNameTaken}" class="error">This username has been taken</p>
-            <form>
-                <img class="img-fluid" src="../../static/images/logo.png" alt="" >
+            <form th:action="@{/process_login}" th:object="${user}" method="post">
+                <img class="img-fluid" src="../../static/images/logo.png" alt="">
                 <h1 class="h3 mb-3 fw-normal">Log In</h1>
 
                 <div class="form-floating">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Your Username">
+                    <label for="username">Username/Email</label>
+                    <input th:field="*{userName}" type="text" class="form-control" id="username"
+                           placeholder="Your Username or Email" required>
                 </div>
 
                 <div class="form-floating">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Your Password">
+                    <input th:field="*{password}" type="password" class="form-control" id="password"
+                           placeholder="Your Password" required>
                 </div>
                 <br/>
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>

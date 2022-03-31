@@ -22,16 +22,5 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/process_register")
-    public String processRegister(User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setCreatedAt(LocalDateTime.now());
-
-        userRepository.save(user);
-        return "user/register_success";
-    }
-
 
 }
