@@ -15,52 +15,65 @@
 </head>
 <body>
 
-<!-- Login failed -->
+<!-- Login failed
 <div th:if="${login_failed_message} != null" class="alert alert-danger alert-dismissible fade show" role="alert">
     <span th:text="${login_failed_message}"></span>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+-->
 
 <main class="form-login">
     <div class="container">
-        <div class="col-md-12">
-            <form th:action="@{/process_login}" th:object="${user}" method="post">
-                <img class="img-fluid" src="../../static/images/logo.png" alt="">
+        <div class="col-md-4 mx-auto">
+            <!-- LOGIN FORM -->
+            <form th:action="@{/login}" method="post">
                 <h1 class="h3 mb-3 fw-normal">Log In</h1>
 
+                <!-- USERNAME -->
                 <div class="form-floating">
-                    <label for="username">Username/Email</label>
-                    <input th:field="*{userName}" type="text" class="form-control" id="username"
-                           placeholder="Your Username or Email" required>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control" id="username"
+                           placeholder="Username" required autofocus>
                 </div>
 
+                <!-- PASSWORD -->
                 <div class="form-floating">
                     <label for="password">Password</label>
-                    <input th:field="*{password}" type="password" class="form-control" id="password"
-                           placeholder="Your Password" required>
+                    <input type="password" class="form-control" name="password" id="password"
+                           placeholder="Password" required>
+                    <span class="has-error text-danger" th:text="${error}"></span>
                 </div>
+
+                <!-- TOKEN -->
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <br/>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
+
+                <!-- LOGIN BUTTON -->
+                <button class="w-100 btn btn-lg btn-primary" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Log In</button>
             </form>
+
+            <!-- REGISTER BUTTON -->
+            <a th:href="@{/register}" class="w-100 btn btn-lg btn-outline-secondary">Register</a>
             <hr/>
-            <a th:href="@{/}" class="w-100 btn btn-lg btn-secondary">Back to Main Page</a>
+            <!-- BACK TO MAIN PAGE BUTTON -->
+            <a th:href="@{/}" class="w-100 btn btn-lg btn-outline-dark"><i class="fa-solid fa-arrow-left"></i> Back to Main Page</a>
         </div>
     </div>
 </main>
 
 <div class="b-example-divider"></div>
 
-<div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-            <span class="text-muted">&copy;Jan Kluka 2022</span>
-        </div>
-    </footer>
-</div>
+<!-- FOOTER -->
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+        <span class="text-muted">&copy; Jan Kluka 2022</span>
+    </div>
+</footer>
 
 
+<!-- SCRIPTS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

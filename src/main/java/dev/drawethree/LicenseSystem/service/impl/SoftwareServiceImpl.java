@@ -40,4 +40,9 @@ public class SoftwareServiceImpl implements SoftwareService {
     public void deleteById(int id) {
        this.softwareRepository.deleteById(id);
     }
+
+    @Override
+    public long getSoftwareCount() {
+        return this.softwareRepository.count();
+    }
 }

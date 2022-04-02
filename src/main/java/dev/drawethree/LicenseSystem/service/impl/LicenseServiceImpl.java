@@ -40,4 +40,9 @@ public class LicenseServiceImpl implements LicenseService {
     public void delete(License license) {
         this.licenseRepository.delete(license);
     }
+
+    @Override
+    public long getLicenseCount() {
+        return licenseRepository.count();
+    }
 }

@@ -16,4 +16,5 @@ public interface LicenseService {
 
     void delete(License license);
 
+    long getLicenseCount();
 }

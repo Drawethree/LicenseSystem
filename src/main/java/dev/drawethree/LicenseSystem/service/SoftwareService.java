@@ -15,4 +15,6 @@ public interface SoftwareService {
     void delete(Software software);
 
     void deleteById(int id);
+
+    long getSoftwareCount();
 }
