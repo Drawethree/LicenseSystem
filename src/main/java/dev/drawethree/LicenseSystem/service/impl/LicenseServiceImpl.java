@@ -6,6 +6,7 @@ import dev.drawethree.LicenseSystem.service.LicenseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LicenseServiceImpl implements LicenseService {
@@ -32,6 +33,16 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
+    public Optional<License> getByLicenseUserAndSoftwareId(String licenseUser, int softwareId) {
+        return licenseRepository.findByLicenseUserAndSoftwareId(licenseUser,softwareId);
+    }
+
+    @Override
+    public Optional<License> getByLicenseKey(String licenseKey) {
+        return licenseRepository.findByLicenseKey(licenseKey);
+    }
+
+    @Override
     public void save(License license) {
         this.licenseRepository.save(license);
     }
@@ -44,5 +55,10 @@ public class LicenseServiceImpl implements LicenseService {
     @Override
     public long getLicenseCount() {
         return licenseRepository.count();
+    }
+
+    @Override
+    public void deleteById(int licenseId) {
+        licenseRepository.deleteById(licenseId);
     }
 }

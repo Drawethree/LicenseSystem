@@ -37,7 +37,7 @@ public class User {
     private String roles;
 
     @OrderBy("name desc")
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @ToString.Exclude
     @JsonIgnore
     private List<Software> softwares;

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "software")
@@ -43,5 +44,18 @@ public class Software {
     public Software(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Software software = (Software) o;
+        return id == software.id && name.equals(software.name) && description.equals(software.description) && createdAt.equals(software.createdAt) && user.equals(software.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, createdAt, user);
     }
 }
