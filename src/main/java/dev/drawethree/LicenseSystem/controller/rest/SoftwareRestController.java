@@ -16,12 +16,12 @@ public class SoftwareRestController {
 		this.softwareService = softwareService;
 	}
 
-	@GetMapping(path = "/{id}")
+	@GetMapping("/{id}")
 	public Software getById(@PathVariable int id) {
 		return softwareService.getById(id);
 	}
 
-	@GetMapping(path = "/all")
+	@GetMapping
 	public List<Software> getAll() {
 		return softwareService.findAll();
 	}

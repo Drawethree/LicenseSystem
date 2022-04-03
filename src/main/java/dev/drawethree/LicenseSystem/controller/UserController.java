@@ -29,7 +29,6 @@ public class UserController {
         this.userValidator = userValidator;
     }
 
-
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
 
@@ -53,6 +52,7 @@ public class UserController {
         user.setCreatedAt(LocalDateTime.now());
 
         String rawPw = user.getPassword();
+
         userService.save(user);
 
         securityService.autoLogin(user.getUsername(), rawPw);
@@ -73,5 +73,17 @@ public class UserController {
         }
 
         return "user/login";
+    }
+
+    @GetMapping("/panel")
+    public String showUserPanel(Model model) {
+
+        if (!securityService.isAuthenticated()) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("user", securityService.getCurrentUser());
+
+        return "user/panel";
     }
 }

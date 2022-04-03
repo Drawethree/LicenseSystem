@@ -1,5 +1,7 @@
 package dev.drawethree.LicenseSystem.service.impl;
 
+import dev.drawethree.LicenseSystem.model.User;
+import dev.drawethree.LicenseSystem.security.UserDetailsImpl;
 import dev.drawethree.LicenseSystem.service.SecurityService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -23,6 +25,11 @@ public class SecurityServiceImpl implements SecurityService {
         this.authenticationManager = authenticationManager;
     }
 
+
+    @Override
+    public User getCurrentUser() {
+        return ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    }
 
     @Override
     public boolean isAuthenticated() {

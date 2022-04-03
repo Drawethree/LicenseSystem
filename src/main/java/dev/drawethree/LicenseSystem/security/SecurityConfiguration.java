@@ -1,11 +1,9 @@
 package dev.drawethree.LicenseSystem.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,18 +30,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        String[] staticResources  =  {
-                "/css/**",
-                "/images/**",
-                "/fonts/**",
-                "/scripts/**",
-        };
         http
                 .authorizeRequests()
-                .antMatchers(staticResources).permitAll()
+                .antMatchers("/css/**","/images/**","/scripts/**","/fonts/**").permitAll()
                 .antMatchers("/", "/register").permitAll()
-                .antMatchers("/home").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/panel").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/software").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/license").hasAnyAuthority("USER", "ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")

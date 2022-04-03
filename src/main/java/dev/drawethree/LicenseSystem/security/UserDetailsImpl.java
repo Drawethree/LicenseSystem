@@ -1,6 +1,7 @@
 package dev.drawethree.LicenseSystem.security;
 
 import dev.drawethree.LicenseSystem.model.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
+    @Getter
     private final User user;
 
     public UserDetailsImpl(User user) {

@@ -21,7 +21,6 @@
     <table class="table table-bordered table-hovertable-striped">
         <thead class="thead-dark">
         <tr>
-            <th><i class="fa-solid fa-circle-info"></i> Icon</th>
             <th><i class="fa-solid fa-pen-to-square"></i> Name</th>
             <th><i class="fa-solid fa-pen-to-square"></i> Description</th>
             <th><i class="fa-solid fa-calendar-days"></i> Created At</th>
@@ -30,7 +29,6 @@
         </thead>
         <tbody>
         <tr th:each="software : ${softwares}">
-            <td><img class="img" src="../../static/images/logo.png" alt="Software Icon"></td>
             <td th:text="${software.name}"></td>
             <td th:text="${software.description}"></td>
             <td th:text="${#temporals.format(software.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -45,8 +43,13 @@
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/software/create}" class="btn btn-primary col-12"><i class="fa-solid fa-circle-plus"></i> Create New
+    <!-- CREATE NEW SOFTWARE  BUTTON -->
+    <a th:href="@{/software/create}" class="btn btn-
+    primary col-12"><i class="fa-solid fa-circle-plus"></i> Create New
         Software</a>
+    <!-- BACK TO PANEL BUTTON -->
+    <a th:href="@{/panel}" class="btn btn-outline-secondary col-12"><i class="fa-solid fa-arrow-left"></i> Back to
+        Panel</a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

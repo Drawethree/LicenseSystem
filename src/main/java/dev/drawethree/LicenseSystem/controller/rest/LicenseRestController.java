@@ -21,7 +21,7 @@ public class LicenseRestController {
         return licenseService.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<License> getAll() {
         return licenseService.findAll();
     }

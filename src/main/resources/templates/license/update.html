@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -11,29 +11,37 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>404 Not Found</title>
+    <title>Employees</title>
 </head>
+
 <body>
-
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="error-template">
-                <h1>Oops!</h1>
-                <h2>404 Not Found</h2>
-                <div class="error-details">
-                    Sorry, an error has occured, Requested page not found!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <h3>Update Software</h3>
+    <hr>
+    <p class="h4 mb-4">Update Software</p>
+    <form action="#" th:action="@{/software/update}" th:object="${software}" method="post">
+        <input type="hidden" th:field="*{id}"/>
 
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-        <span class="text-muted">&copy;Jan Kluka 2022</span>
-    </div>
-</footer>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control mb-4 col-4" placeholder="Name">
+            <span class="has-error text-danger" th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="desc">Description</label>
+            <input type="text" id="desc" th:field="*{description}" class="form-control mb-4 col-4"
+                   placeholder="Description">
+            <span class="has-error text-danger" th:if="${#fields.hasErrors('description')}"
+                  th:errors="*{description}"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success col-2">Update Software</button>
+    </form>
+    <hr>
+    <a th:href="@{/software}">Back to all softwares</a>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

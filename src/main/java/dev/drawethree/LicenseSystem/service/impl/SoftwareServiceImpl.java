@@ -1,11 +1,13 @@
 package dev.drawethree.LicenseSystem.service.impl;
 
 import dev.drawethree.LicenseSystem.model.Software;
+import dev.drawethree.LicenseSystem.model.User;
 import dev.drawethree.LicenseSystem.repository.SoftwareRepository;
 import dev.drawethree.LicenseSystem.service.SoftwareService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SoftwareServiceImpl implements SoftwareService {
@@ -24,6 +26,16 @@ public class SoftwareServiceImpl implements SoftwareService {
     @Override
     public List<Software> findAll() {
         return this.softwareRepository.findAll();
+    }
+
+    @Override
+    public List<Software> findAllByUser(User user) {
+        return softwareRepository.findAllByUser(user);
+    }
+
+    @Override
+    public Optional<Software> findByName(String name) {
+        return softwareRepository.findByName(name);
     }
 
     @Override

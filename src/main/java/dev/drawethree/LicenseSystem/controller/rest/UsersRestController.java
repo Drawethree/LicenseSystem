@@ -19,12 +19,12 @@ public class UsersRestController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public User getById(@PathVariable int id) {
         return userRepository.getById(id);
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping
     public List<User> getAll() {
         return userRepository.findAll();
     }

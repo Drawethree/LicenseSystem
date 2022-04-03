@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "license")
@@ -46,5 +47,18 @@ public class License {
 
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(this.expiresAt);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        License license = (License) o;
+        return id == license.id && software.equals(license.software) && licenseKey.equals(license.licenseKey) && licenseUser.equals(license.licenseUser) && createdAt.equals(license.createdAt) && Objects.equals(expiresAt, license.expiresAt) && status == license.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, software, licenseKey, licenseUser, createdAt, expiresAt, status);
     }
 }
