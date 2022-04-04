@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("software")
@@ -63,9 +64,14 @@ public class SoftwareController {
             return "redirect:/login";
         }
 
-        Software software = softwareService.getById(id);
+        Optional<Software> software = softwareService.findById(id);
 
-        model.addAttribute("software", software);
+        if  (software.isEmpty()) {
+            return "software/list";
+        }
+
+
+        model.addAttribute("software", software.get());
 
         return "software/update";
     }

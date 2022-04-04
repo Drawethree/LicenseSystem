@@ -38,9 +38,7 @@ public class MainController {
         model.addAttribute("license_count", licenseService.getLicenseCount());
         model.addAttribute("software_count", softwareService.getSoftwareCount());
 
-        userService.findTopByOrderByCreatedAtDesc().ifPresent(user -> {
-            model.addAttribute("latest_user",user);
-        });
+        userService.findTopByOrderByCreatedAtDesc().ifPresent(user -> model.addAttribute("latest_user",user));
 
         return "index";
     }
