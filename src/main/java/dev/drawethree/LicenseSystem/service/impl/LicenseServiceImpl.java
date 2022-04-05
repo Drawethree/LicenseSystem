@@ -20,11 +20,6 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
-    public License getById(int id) {
-        return this.licenseRepository.getById(id);
-    }
-
-    @Override
     public List<License> findAll() {
         return this.licenseRepository.findAll();
     }
@@ -62,5 +57,10 @@ public class LicenseServiceImpl implements LicenseService {
     @Override
     public void deleteById(int licenseId) {
         licenseRepository.deleteById(licenseId);
+    }
+
+    @Override
+    public Optional<License> findById(int id) {
+        return licenseRepository.findById(id);
     }
 }

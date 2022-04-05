@@ -21,8 +21,8 @@ public class SoftwareServiceImpl implements SoftwareService {
     }
 
     @Override
-    public Software getById(int id) {
-        return this.softwareRepository.getById(id);
+    public Optional<Software> findById(int id) {
+        return this.softwareRepository.findById(id);
     }
 
     @Override

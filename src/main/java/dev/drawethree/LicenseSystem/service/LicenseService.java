@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface LicenseService {
 
-    License getById(int id);
-
     List<License> findAll();
 
     List<License> getBySoftwareId(int softwareId);
@@ -24,4 +22,6 @@ public interface LicenseService {
     long getLicenseCount();
 
     void deleteById(int licenseId);
+
+   Optional<License> findById(int id);
 }

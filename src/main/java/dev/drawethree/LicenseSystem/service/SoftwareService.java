@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface SoftwareService {
 
-    Software getById(int id);
+    Optional<Software> findById(int id);
 
     List<Software> findAll();
 
