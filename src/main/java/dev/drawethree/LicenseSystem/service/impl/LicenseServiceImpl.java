@@ -5,10 +5,12 @@ import dev.drawethree.LicenseSystem.repository.LicenseRepository;
 import dev.drawethree.LicenseSystem.service.LicenseService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class LicenseServiceImpl implements LicenseService {
 
     private final LicenseRepository licenseRepository;

@@ -38,7 +38,7 @@ public class SoftwareController {
 
         User user = securityService.getCurrentUser();
 
-        List<Software> softwareList = this.softwareService.findAllByUser(user);
+        List<Software> softwareList = this.softwareService.findAllByCreator(user);
 
         model.addAttribute("softwares", softwareList);
 
@@ -113,7 +113,7 @@ public class SoftwareController {
 
         User user = securityService.getCurrentUser();
 
-        software.setUser(user);
+        software.setCreator(user);
         software.setCreatedAt(LocalDateTime.now());
 
         softwareService.save(software);

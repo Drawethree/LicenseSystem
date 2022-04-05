@@ -1,15 +1,18 @@
 package dev.drawethree.LicenseSystem.service.impl;
 
+import dev.drawethree.LicenseSystem.model.Software;
 import dev.drawethree.LicenseSystem.model.User;
 import dev.drawethree.LicenseSystem.repository.UserRepository;
 import dev.drawethree.LicenseSystem.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -24,7 +27,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles("USER");
         userRepository.save(user);
     }
 
@@ -51,5 +53,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public long getUsersCount() {
         return userRepository.count();
+    }
+
+    @Override
+    public boolean canCreateSoftware(User user) {
+        return user.getSoftwares().size() < 5;
+    }
+
+    @Override
+    public boolean canCreateLicense(User user, Software software) {
+        return software.getLicenses().size() < 25;
     }
 }

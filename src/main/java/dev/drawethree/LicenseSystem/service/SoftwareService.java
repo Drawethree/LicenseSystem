@@ -12,7 +12,9 @@ public interface SoftwareService {
 
     List<Software> findAll();
 
-    List<Software> findAllByUser(User user);
+    List<Software> findAllByVisible(boolean visible);
+
+    List<Software> findAllByCreator(User user);
 
     Optional<Software> findByName(String name);
 

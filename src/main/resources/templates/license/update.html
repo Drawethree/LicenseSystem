@@ -37,12 +37,17 @@
                   th:errors="*{description}"></span>
         </div>
 
-        <button type="submit" class="btn btn-success col-2">Update Software</button>
+        <button type="submit" class="btn btn-success col-2"><i class="fa-solid fa-floppy-disk"> Update</button>
     </form>
     <hr>
     <a th:href="@{/software}">Back to all softwares</a>
 </div>
 
+<div class="b-example-divider"></div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- SCRIPTS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

@@ -1,5 +1,6 @@
 package dev.drawethree.LicenseSystem.service;
 
+import dev.drawethree.LicenseSystem.model.Software;
 import dev.drawethree.LicenseSystem.model.User;
 
 import java.util.Collection;
@@ -18,4 +19,8 @@ public interface UserService {
     Collection<User> findAll();
 
     long getUsersCount();
+
+    boolean canCreateSoftware(User user);
+
+    boolean canCreateLicense(User user, Software software);
 }

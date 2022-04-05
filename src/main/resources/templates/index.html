@@ -15,7 +15,7 @@
 </head>
 <body>
 
-
+<!-- ALERTS
 <div th:if="${login}" class="alert alert-success alert-dismissible fade show" role="alert">
     Successfully logged in
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -35,7 +35,9 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-</div>
+</div> -->
+
+<div th:replace="fragments/header :: header"></div>
 
 <main>
     <div class="container">
@@ -56,53 +58,39 @@
             <div class="col-lg-6 mx-auto">
                 <p class="lead mb-4">Create and Manage licenses for your premium software.</p>
                 <i class="fa-solid fa-users"></i>
-                <p th:text="${users_count} + ' Users Registered'"></p>
+                <p th:text="${users_count} + '&nbsp;Users Registered'"></p>
                 <i class="fa-solid fa-gear"></i>
-                <p th:text="${software_count} + ' Software created so far.'"></p>
+                <p th:text="${software_count} + '&nbsp;Software created so far.'"></p>
                 <i class="fa-solid fa-id-card"></i>
-                <p th:text="${license_count} + ' Licenses created so far.'"></p>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <!-- LOGIN BUTTON + REGISTER BUTTON -->
-                    <div sec:authorize="!isAuthenticated()">
-                        <a th:href="@{/login}" class="btn btn-primary btn-lg"><i
-                                class="fa-solid fa-right-to-bracket"></i> Login</a>
-                        <a th:href="@{/register}" class="btn btn-outline-secondary btn-lg"><i
-                                class="fa-solid fa-user-plus"></i> Register</a>
-                    </div>
-
-                    <div sec:authorize="isAuthenticated">
-                        <!-- LOGOUT BUTTON -->
-                        <a th:href="@{/software}" class="btn btn-primary btn-lg">Your Panel</a>
-
-                        <form id="logout" method="POST" th:action="@{/logout}">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <button class="btn btn-outline-danger btn-lg" type="submit"><i
-                                    class="fa-solid fa-person-running"></i> Logout
-                            </button>
-                        </form>
-
-                    </div>
-                </div>
+                <p th:text="${license_count} + '&nbsp;Licenses created so far.'"></p>
                 <div th:if="${latest_user != null}">
                     <i class="fa-solid fa-user-plus"></i><span
-                        th:text="' Latest User: ' + ${latest_user.getUsername() + ', joined on ' + latest_user.getCreatedAt()}" </p>
+                        th:text="'&nbsp;Latest User: ' + ${latest_user.getUsername() + ', joined on ' + latest_user.getCreatedAt()}" </p>
                 </div>
             </div>
         </div>
-
-        <div class="b-example-divider"></div>
     </div>
 
     <div class="b-example-divider"></div>
+
+    <div class="container">
+        <div class="row-md-8" th:each="software : ${softwares}">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-header" th:text="${software.name}"></h2>
+                    <p class="card-text" th:text="${software.description}"></p>
+                    <i class="fa-solid fa-user"></i><small class="text-muted"
+                                                           th:text="'&nbsp;Created By: ' + ${software.creator.username}"></small>
+                    <i class="fa-solid fa-address-card"></i><small class="text-muted"
+                                                                   th:text="'&nbsp;' + ${software.getActiveLicenses().size()} + ' Active Liceses'"></small>
+                </div>
+            </div>
+            <br/>
+        </div>
+    </div>
 </main>
 
-<!-- FOOTER -->
-
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-        <span class="text-muted">&copy;Jan Kluka 2022</span>
-    </div>
-</footer>
+<div th:replace="fragments/footer :: footer"></div>
 
 <!-- SCRIPTS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

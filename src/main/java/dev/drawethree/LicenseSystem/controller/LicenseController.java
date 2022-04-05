@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("license")
@@ -48,7 +47,9 @@ public class LicenseController {
         }
 
         User user = securityService.getCurrentUser();
-        List<Software> softwareList = softwareService.findAllByUser(user);
+
+
+        List<Software> softwareList = softwareService.findAllByCreator(user);
 
         List<License> licenses = new ArrayList<>();
 

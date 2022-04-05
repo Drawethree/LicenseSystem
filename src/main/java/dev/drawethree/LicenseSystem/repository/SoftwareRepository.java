@@ -12,7 +12,9 @@ import java.util.Optional;
 @Repository
 public interface SoftwareRepository extends JpaRepository<Software, Integer> {
 
-    List<Software> findAllByUser(User user);
+    List<Software> findAllByCreator(User creator);
+
+    List<Software> findAllByVisible(boolean visible);
 
     Optional<Software> findByName(String name);
 

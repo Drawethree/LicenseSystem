@@ -15,47 +15,63 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="col md-4">
-        <h3>Create New License</h3>
-        <hr>
-        <p class="h4 mb-4">Create New License</p>
-        <form action="#" th:action="@{/license/create}" th:object="${license}" method="post">
 
-            <div class="form-group">
-                <label for="software">Software</label>
-                <select class="form-control" id="software" th:field="*{software}" name="software">
-                    <option th:each="software : ${softwares}"
-                            th:text="${software.getName()}"
-                            th:value="${software.id}"></option>
-                </select>
-            </div>
+<div th:replace="fragments/header :: header"></div>
 
-            <div class="form-group">
-                <label for="licenseUser">License User</label>
-                <input type="text" id="licenseUser" th:field="*{licenseUser}" class="form-control mb-4 col-4" placeholder="License User"
-                       required>
-            </div>
+<main>
+    <div class="container">
+        <div class="col md-4">
+            <h3>Create New License</h3>
+            <hr>
+            <p class="h4 mb-4">Create New License</p>
+            <form action="#" th:action="@{/license/create}" th:object="${license}" method="post">
 
-            <div class="form-group">
-                <label for="licenseKey">License Key</label>
-                <input type="text" id="licenseKey" th:field="*{licenseKey}" class="form-control mb-4 col-4"
-                       placeholder="License Key" th:value="${licenseKey}" required readonly>
-            </div>
+                <div class="form-group">
+                    <label for="software">Software</label>
+                    <select class="form-control mb-4 col-4" id="software" th:field="*{software}" name="software">
+                        <option th:each="software : ${softwares}"
+                                th:text="${software.name}"
+                                th:value="${software.id}"></option>
+                    </select>
+                    <span class="has-error text-danger" th:if="${#fields.hasErrors('software')}"
+                          th:errors="*{software}"></span>
+                </div>
 
-            <div class="form-group">
-                <label for="expiresAt">Expire Date</label>
-                <input type="datetime-local" id="expiresAt" th:field="*{expiresAt}" class="form-control mb-4 col-4"
-                       placeholder="Expire Date" required>
-            </div>
+                <div class="form-group">
+                    <label for="licenseUser">License User</label>
+                    <input type="text" id="licenseUser" th:field="*{licenseUser}" class="form-control mb-4 col-4"
+                           placeholder="License User">
+                </div>
 
-            <button type="submit" class="btn btn-success col-2">Save</button>
-        </form>
-        <hr>
-        <a th:href="@{/license}">Back to licenses</a>
+                <div class="form-group">
+                    <label for="licenseKey">License Key</label>
+                    <input type="text" id="licenseKey" th:field="*{licenseKey}" class="form-control mb-4 col-4"
+                           placeholder="License Key" th:value="${licenseKey}" required readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration-amount">License Duration In Days</label>
+                    <input type="number" min=1 value="1" id="duration-amount" th:field="*{duration}"
+                           class="form-control mb-4 col-4"
+                           placeholder="Duration In Days" required>
+                    <span class="has-error text-danger" th:if="${#fields.hasErrors('duration')}"
+                          th:errors="*{duration}"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success col-2"><i class="fa-solid fa-floppy-disk"></i> Save
+                </button>
+            </form>
+            <hr>
+            <a th:href="@{/license}" class="btn btn-outline-secondary"><i class="fa-solid fa-circle-arrow-left"></i>
+                Back to
+                Licenses</a>
+        </div>
     </div>
-</div>
+</main>
 
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- SCRIPTS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -66,7 +82,5 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 </body>
-<footer class="pt-3 mt-4 text-muted border-top">
-    &copy; 2021
-</footer>
 </html>
+

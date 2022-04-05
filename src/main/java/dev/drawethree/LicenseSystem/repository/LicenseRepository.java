@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface LicenseRepository extends JpaRepository<License, Integer> {
+
     List<License> findAllBySoftwareId(int softwareId);
 
     Optional<License> findByLicenseUserAndSoftwareId(String licenseUser, int softwareId);

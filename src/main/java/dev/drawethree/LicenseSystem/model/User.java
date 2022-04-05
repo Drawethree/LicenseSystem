@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -37,9 +38,15 @@ public class User {
     private String roles;
 
     @OrderBy("name desc")
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "creator", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     @ToString.Exclude
     @JsonIgnore
     private List<Software> softwares;
+
+    @OrderBy("expiresAt desc")
+    @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @ToString.Exclude
+    @JsonIgnore
+    private List<License> licenses;
 
 }

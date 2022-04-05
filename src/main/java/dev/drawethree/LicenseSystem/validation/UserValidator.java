@@ -26,19 +26,21 @@ public class UserValidator implements Validator {
         User user = (User) object;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "field.required");
+
         /*if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
             errors.rejectValue("username", "username.size");
         }*/
 
         if (userService.findByUsername(user.getUsername()).isPresent()) {
-            errors.rejectValue("username", "username.taken");
+            errors.rejectValue("username", "user.username.taken");
         }
 
         if (userService.findByEmail(user.getEmail()).isPresent()) {
-            errors.rejectValue("email", "email.taken");
+            errors.rejectValue("email", "user.email.taken");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required");
+
         /*if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "password.size");
         }*/

@@ -13,7 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class SecurityServiceImpl implements SecurityService {
 
     private final UserDetailsService userDetailsService;

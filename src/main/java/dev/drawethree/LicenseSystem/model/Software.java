@@ -5,9 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "software")
@@ -31,31 +30,25 @@ public class Software {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "visible", nullable = false)
+    private boolean visible;
+
     @OrderBy("id desc")
-    @OneToMany(mappedBy = "software", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "software", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
     private List<License> licenses;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "creator_id", nullable = false)
+    private User creator;
 
     public Software(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Software software = (Software) o;
-        return id == software.id && name.equals(software.name) && description.equals(software.description) && createdAt.equals(software.createdAt) && user.equals(software.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, createdAt, user);
+    public List<License> getActiveLicenses() {
+        return licenses.stream().filter(License::isActive).collect(Collectors.toList());
     }
 }

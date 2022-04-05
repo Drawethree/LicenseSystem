@@ -20,15 +20,19 @@ public class License {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "software_id", nullable = false)
     private Software software;
 
     @Column(name = "license_key", nullable = false, unique = true)
     private String licenseKey;
 
-    @Column(nullable = false)
-    private String licenseUser;
+    @Column(name = "duration", nullable = false)
+    private int duration;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "customer_id", nullable = false)
+    private User licenseUser;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -46,19 +50,6 @@ public class License {
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(this.expiresAt);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        License license = (License) o;
-        return id == license.id && software.equals(license.software) && licenseKey.equals(license.licenseKey) && licenseUser.equals(license.licenseUser) && createdAt.equals(license.createdAt) && Objects.equals(expiresAt, license.expiresAt) && status == license.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, software, licenseKey, licenseUser, createdAt, expiresAt, status);
+        return !isActive();
     }
 }

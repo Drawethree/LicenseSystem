@@ -23,8 +23,10 @@
 </div>
 -->
 
-<main class="form-login">
-    <div class="container">
+<div th:replace="fragments/header :: header"></div>
+
+<main>
+    <div class="container form-login">
         <div class="col-md-4 mx-auto">
             <!-- REGISTER FORM -->
             <form th:action="@{/register}" th:object="${user}" method="POST">
@@ -58,31 +60,26 @@
                           th:errors="*{password}"></span>
                 </div>
 
+                <!-- ACCOUNT TYPE INPUT -->
+                <div class="form-group">
+                    <label for="account-type">Account Type</label>
+                    <select id="account-type" class="form-control" th:field="*{roles}" required>
+                        <option value="ROLE_CREATOR">Creator</option>
+                        <option value="ROLE_CUSTOMER">Customer</option>
+                    </select>
+                </div>
+
                 <br/>
                 <!-- REGISTER BUTTON -->
                 <button class="w-100 btn btn-lg btn-primary" type="submit"><i
                         class="fa-solid fa-user-plus"></i> Register
                 </button>
             </form>
-            <hr/>
-            <!-- BACK TO MAIN PAGE BUTTON -->
-            <a th:href="@{/}" class="w-100 btn btn-lg btn-outline-dark"><i class="fa-solid fa-arrow-left"></i> Back to
-                Main Page</a>
         </div>
     </div>
 </main>
 
-<div class="b-example-divider"></div>
-
-<!-- FOOTER -->
-<div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-            <span class="text-muted">&copy;Jan Kluka 2022</span>
-        </div>
-    </footer>
-</div>
-
+<div th:replace="fragments/footer :: footer"></div>
 
 <!-- SCRIPTS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -96,3 +93,4 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
+

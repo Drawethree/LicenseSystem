@@ -6,10 +6,12 @@ import dev.drawethree.LicenseSystem.repository.SoftwareRepository;
 import dev.drawethree.LicenseSystem.service.SoftwareService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class SoftwareServiceImpl implements SoftwareService {
 
     private final SoftwareRepository softwareRepository;
@@ -29,8 +31,13 @@ public class SoftwareServiceImpl implements SoftwareService {
     }
 
     @Override
-    public List<Software> findAllByUser(User user) {
-        return softwareRepository.findAllByUser(user);
+    public List<Software> findAllByVisible(boolean visible) {
+        return this.softwareRepository.findAllByVisible(visible);
+    }
+
+    @Override
+    public List<Software> findAllByCreator(User user) {
+        return softwareRepository.findAllByCreator(user);
     }
 
     @Override

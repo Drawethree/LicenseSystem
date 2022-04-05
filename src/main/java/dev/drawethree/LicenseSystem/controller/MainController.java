@@ -1,5 +1,6 @@
 package dev.drawethree.LicenseSystem.controller;
 
+import dev.drawethree.LicenseSystem.model.Software;
 import dev.drawethree.LicenseSystem.service.LicenseService;
 import dev.drawethree.LicenseSystem.service.SecurityService;
 import dev.drawethree.LicenseSystem.service.SoftwareService;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -34,12 +37,14 @@ public class MainController {
             return "redirect:/panel";
         }
 
+
         model.addAttribute("users_count", userService.getUsersCount());
         model.addAttribute("license_count", licenseService.getLicenseCount());
         model.addAttribute("software_count", softwareService.getSoftwareCount());
+        model.addAttribute("softwares", softwareService.findAllByVisible(true));
 
         userService.findTopByOrderByCreatedAtDesc().ifPresent(user -> {
-            model.addAttribute("latest_user",user);
+            model.addAttribute("latest_user", user);
         });
 
         return "index";
