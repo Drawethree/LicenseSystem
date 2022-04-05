@@ -16,7 +16,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" th:fragment="header">
-    <a class="navbar-brand" href="#">License System</a>
+    <a class="navbar-brand">License System</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItems"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,22 +32,24 @@
                 <a class="nav-link" href="/" th:href="@{/}"><i class="fa-solid fa-house"></i>&nbsp;Home</a>
             </li>
 
+            <div sec:authorize="hasAuthority('CREATOR')">
+                <li class="nav-item nav-link">
+                    <a href="/panel/software" th:href="@{/software/create}" class="nav-link"><i
+                            class="fa-solid fa-table-columns"></i>&nbsp;Create New Software</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAuthority('CREATOR')">
+                <li class="nav-item nav-link">
+                    <a href="/panel/software" th:href="@{/license/create}" class="nav-link"><i
+                            class="fa-solid fa-table-columns"></i>&nbsp;Create New License</a>
+                </li>
+            </div>
+
             <li class="nav-item nav-link">
-                <a href="/license/activation" th:href="@{/license/activation}" class="nav-link"><i
-                        class="fa-solid fa-file-circle-check"></i></i>&nbsp;Activate License</a>
+                <a href="/license/activate" th:href="@{/license/activate}" class="nav-link"><i
+                        class="fa-solid fa-key"></i>&nbsp;Activate License</a>
             </li>
-
-            <div sec:authorize="isAuthenticated()">
-                <li class="nav-item nav-link">
-                    <a href="/panel/software" th:href="@{/software/create}" class="nav-link"><i class="fa-solid fa-table-columns"></i>&nbsp;New Software</a>
-                </li>
-            </div>
-
-            <div sec:authorize="isAuthenticated()">
-                <li class="nav-item nav-link">
-                    <a href="/panel/software" th:href="@{/license/create}" class="nav-link"><i class="fa-solid fa-table-columns"></i>&nbsp;New License</a>
-                </li>
-            </div>
 
         </ul>
 
@@ -71,8 +73,14 @@
 
             <div sec:authorize="isAuthenticated()">
                 <li class="nav-item nav-link mr">
-                    <a href="/logout" th:href="@{/logout}" th:action="@{/logout}" class="nav-link"><i
-                            class="fa-solid fa-person-running"></i>&nbsp;Logout</a>
+                    <form id="logout" method="POST" th:action="@{/logout}">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button class="btn btn-outline-danger btn-lg" type="submit"><i
+                                class="fa-solid fa-person-running"></i>&nbsp;Logout
+                        </button>
+                        <!--<a th:href="@{/logout}" th:action="@{/logout}" th:method="post" class="nav-link"><i
+                                class="fa-solid fa-person-running"></i>&nbsp;Logout</a>-->
+                    </form>
                 </li>
             </div>
         </ul>

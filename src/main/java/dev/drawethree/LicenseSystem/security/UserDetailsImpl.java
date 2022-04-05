@@ -1,6 +1,6 @@
 package dev.drawethree.LicenseSystem.security;
 
-import dev.drawethree.LicenseSystem.model.User;
+import dev.drawethree.LicenseSystem.user.model.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

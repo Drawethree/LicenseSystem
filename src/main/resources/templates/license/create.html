@@ -37,11 +37,12 @@
                           th:errors="*{software}"></span>
                 </div>
 
+                <!--
                 <div class="form-group">
                     <label for="licenseUser">License User</label>
                     <input type="text" id="licenseUser" th:field="*{licenseUser}" class="form-control mb-4 col-4"
                            placeholder="License User">
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <label for="licenseKey">License Key</label>
@@ -50,20 +51,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="duration-amount">License Duration In Days</label>
-                    <input type="number" min=1 value="1" id="duration-amount" th:field="*{duration}"
+                    <label for="duration-amount">License Duration In Days (0 = Permanent)</label>
+                    <input type="number" min=0 value="0" id="duration-amount" th:field="*{duration}"
                            class="form-control mb-4 col-4"
                            placeholder="Duration In Days" required>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('duration')}"
                           th:errors="*{duration}"></span>
                 </div>
 
-                <button type="submit" class="btn btn-success col-2"><i class="fa-solid fa-floppy-disk"></i> Save
+                <button type="submit" class="btn btn-success col-2"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save
                 </button>
             </form>
             <hr>
             <a th:href="@{/license}" class="btn btn-outline-secondary"><i class="fa-solid fa-circle-arrow-left"></i>
-                Back to
+                &nbsp;Back to
                 Licenses</a>
         </div>
     </div>

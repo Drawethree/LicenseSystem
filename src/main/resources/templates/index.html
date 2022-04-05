@@ -43,8 +43,9 @@
     <div class="container">
 
         <!-- debug user -->
-        <div sec:authorize="hasRole('USER')">Text visible to user.</div>
-        <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+        <div sec:authorize="hasAuthority('CREATOR')">User is creator</div>
+        <div sec:authorize="hasAuthority('CUSTOMER')">User is customer</div>
+        <div sec:authorize="hasAuthority('ADMIN')">User is admin</div>
         <div sec:authorize="isAuthenticated()">
             Text visible only to authenticated users.
         </div>
@@ -73,8 +74,9 @@
 
     <div class="b-example-divider"></div>
 
-    <div class="container">
-        <div class="row-md-8" th:each="software : ${softwares}">
+    <div class="container" th:if="${software_page.content.size() > 0}">
+        <p class="h4">Public Softwares</p>
+        <div class="row-md-8" th:each="software : ${software_page.content}">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h2 class="card-header" th:text="${software.name}"></h2>
@@ -87,6 +89,16 @@
             </div>
             <br/>
         </div>
+
+        <div class="row" th:if="${software_page.totalPages > 0}">
+            <ul class="pagination pagination-lg" th:each="pageNumber : ${page_numbers}">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/(page=${pageNumber})}"
+                       th:text="${pageNumber}"></a>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </main>
 
