@@ -1,0 +1,13 @@
+/user/licenses - Show user licenses ( customer, creator )
+/user/softwares - Show user softwares ( creator )
+
+Header
+Softwares, Activate License, Login, Register, Logout, Home
+
+/user - Show user panel
+Your Softwares, Your Licenses ( creator )
+Your Licenses ( customer )
+
+/user/licenses - Show user licenses, paginated
+
+/user/softwares - Show user softwares, paginated

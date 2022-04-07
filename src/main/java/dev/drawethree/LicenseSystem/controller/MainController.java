@@ -38,9 +38,9 @@ public class MainController {
     @GetMapping({"/", "home"})
     public String showMainPage(@RequestParam("page") Optional<Integer> page, Model model) {
 
-        if (securityService.isAuthenticated()) {
+        /*if (securityService.isAuthenticated()) {
             return "redirect:/user";
-        }
+        }*/
 
         int currentPage = page.orElse(1);
         int pageSize = 5;

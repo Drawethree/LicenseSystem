@@ -24,7 +24,7 @@
             <h3>Create New License</h3>
             <hr>
             <p class="h4 mb-4">Create New License</p>
-            <form action="#" th:action="@{/license/create}" th:object="${license}" method="post">
+            <form action="#" th:action="@{/user/licenses/create}" th:object="${license}" method="post">
 
                 <div class="form-group">
                     <label for="software">Software</label>
@@ -63,7 +63,7 @@
                 </button>
             </form>
             <hr>
-            <a th:href="@{/license}" class="btn btn-outline-secondary"><i class="fa-solid fa-circle-arrow-left"></i>
+            <a th:href="@{/user/licenses}" class="btn btn-outline-secondary"><i class="fa-solid fa-circle-arrow-left"></i>
                 &nbsp;Back to
                 Licenses</a>
         </div>

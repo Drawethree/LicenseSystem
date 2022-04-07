@@ -1,4 +1,4 @@
-package dev.drawethree.LicenseSystem.security;
+package dev.drawethree.LicenseSystem.auth.user;
 
 import dev.drawethree.LicenseSystem.user.model.User;
 import lombok.Getter;

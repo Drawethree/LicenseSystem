@@ -31,7 +31,7 @@ public class SoftwareController {
     }
 
     @GetMapping
-    public String viewSoftwares(Model model) {
+    public String index(Model model) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -43,7 +43,7 @@ public class SoftwareController {
 
         model.addAttribute("softwares", softwareList);
 
-        return "software/list";
+        return "software/index";
     }
 
     @GetMapping("/create")
@@ -67,7 +67,7 @@ public class SoftwareController {
         Optional<Software> software = softwareService.findById(id);
 
         if  (software.isEmpty()) {
-            return "software/list";
+            return "software/index";
         }
 
 
@@ -90,7 +90,7 @@ public class SoftwareController {
         }
 
         softwareService.save(software);
-        return "redirect:/software";
+        return "redirect:/user/software";
     }
 
     @GetMapping("/delete")
@@ -101,7 +101,7 @@ public class SoftwareController {
         }
 
         softwareService.deleteById(id);
-        return "redirect:/software/";
+        return "redirect:/user/software";
     }
 
     @PostMapping("/create")
@@ -123,6 +123,6 @@ public class SoftwareController {
         software.setCreatedAt(LocalDateTime.now());
 
         softwareService.save(software);
-        return "redirect:/software";
+        return "redirect:/user/software";
     }
 }

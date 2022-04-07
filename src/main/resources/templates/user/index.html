@@ -33,24 +33,27 @@
 
         <div class="px-4 py-5 my-5 text-center">
             <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
-            <h1 class="display-5 fw-bold">User Panel</h1>
+
+            <h1 sec:authorize="hasAuthority('CREATOR')" class="display-5 fw-bold">Creator Panel</h1>
+            <h1 sec:authorize="hasAuthority('CUSTOMER')" class="display-5 fw-bold">Customer Panel</h1>
+
             <div class="col-lg-6 mx-auto">
-                <p class="lead mb-4" th:text="'Welcome back, ' + ${user.username} + '!'"></p>
+                <p class="lead" th:text="'Welcome, ' + ${user.username} + '!'"></p>
+                <p class="lead mb-4">What would you like to do today?</p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <div class="btn-group btn-group-lg" role="group" aria-label="...">
-                        <!-- MANAGE SOFTWARES -->
-                        <a th:href="@{/software}" class="btn btn-outline-primary btn-lg"><i
-                                class="fa-solid fa-right-to-bracket"></i>&nbsp;Manage your softwares</a>
-                        <!-- MANAGE LICENSES -->
-                        <a th:href="@{/license}" class="btn btn-outline-secondary btn-lg"><i
-                                class="fa-solid fa-user-plus"></i>&nbsp;Manage your licenses</a>
-                        <!-- LOGOUT BUTTON -->
-                        <form id="logout" method="POST" th:action="@{/logout}">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <button class="btn btn-outline-danger btn-lg" type="submit"><i
-                                    class="fa-solid fa-person-running"></i>&nbsp;Logout
-                            </button>
-                        </form>
+                        <!-- YOUR SOFTWARE -->
+                        <a sec:authorize="hasAuthority('CREATOR')" th:href="@{/user/software}"
+                           class="btn btn-outline-primary btn-lg"><i
+                                class="fa-solid fa-right-to-bracket"></i>&nbsp;Your Software</a>
+                        <!-- YOUR LICENSES -->
+                        <a sec:authorize="hasAnyAuthority('CREATOR', 'CUSTOMER')" th:href="@{/user/licenses}"
+                           class="btn btn-outline-secondary btn-lg"><i
+                                class="fa-solid fa-user-plus"></i>&nbsp;Your Licenses</a>
+                        <!-- ACTIVATE LICENSE -->
+                        <a sec:authorize="hasAnyAuthority('CREATOR', 'CUSTOMER')" th:href="@{/user/licenses/activate}"
+                           class="btn btn-outline-secondary btn-lg"><i
+                                class="fa-solid fa-key"></i>&nbsp;Activate License</a>
                     </div>
                 </div>
             </div>

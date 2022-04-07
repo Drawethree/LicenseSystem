@@ -28,4 +28,6 @@ public interface LicenseService {
 
    Optional<License> findById(int id);
 
+   String generateLicenseKey();
+
 }

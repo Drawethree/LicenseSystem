@@ -1,12 +1,9 @@
 package dev.drawethree.LicenseSystem.license.controller;
 
 import dev.drawethree.LicenseSystem.license.model.License;
-import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.license.service.LicenseService;
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
-import dev.drawethree.LicenseSystem.software.service.SoftwareService;
-import dev.drawethree.LicenseSystem.license.utils.LicenseKeyGenerator;
 import dev.drawethree.LicenseSystem.license.validation.LicenseValidator;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,31 +12,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("license")
+@RequestMapping("user/licenses")
 public class LicenseController {
 
     private final LicenseService licenseService;
-
-    private final SoftwareService softwareService;
 
     private final SecurityService securityService;
 
     private final LicenseValidator licenseValidator;
 
-    public LicenseController(LicenseService licenseService, SoftwareService softwareService, SecurityService securityService, LicenseValidator licenseValidator) {
+    public LicenseController(LicenseService licenseService, SecurityService securityService, LicenseValidator licenseValidator) {
         this.licenseService = licenseService;
-        this.softwareService = softwareService;
         this.securityService = securityService;
         this.licenseValidator = licenseValidator;
     }
 
     @GetMapping
-    public String viewLicenses(Model model) {
+    public String index(Model model) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -47,20 +40,11 @@ public class LicenseController {
 
         User user = securityService.getCurrentUser();
 
-        List<License> licenses = new ArrayList<>();
-
-        if (user.isCreator()) {
-            List<Software> softwareList = softwareService.findAllByCreator(user);
-            for (Software sw : softwareList) {
-                licenses.addAll(sw.getLicenses());
-            }
-        } else if (user.isCustomer()) {
-            licenses = licenseService.findAllByLicenseUser(user);
-        }
+        List<License> licenses = licenseService.findAllByLicenseUser(user);
 
         model.addAttribute("licenses", licenses);
 
-        return "license/list";
+        return "license/index";
     }
 
     @GetMapping("/create")
@@ -74,7 +58,7 @@ public class LicenseController {
         User user = securityService.getCurrentUser();
 
         License license = new License();
-        license.setLicenseKey(LicenseKeyGenerator.generateNewLicenseKey());
+        license.setLicenseKey(licenseService.generateLicenseKey());
 
         model.addAttribute("license", license);
         model.addAttribute("softwares", user.getSoftwares());
@@ -98,7 +82,7 @@ public class LicenseController {
         license.setCreatedAt(LocalDateTime.now());
 
         licenseService.save(license);
-        return "redirect:/license";
+        return "redirect:/user/licenses";
     }
 
     @GetMapping("/delete")
@@ -110,7 +94,7 @@ public class LicenseController {
         }
 
         licenseService.deleteById(id);
-        return "redirect:/license";
+        return "redirect:/user/licenses";
     }
 
     @GetMapping("/activate")
@@ -158,6 +142,6 @@ public class LicenseController {
         }
 
         licenseService.save(license);
-        return "index";
+        return "redirect:/user/licenses";
     }
 }

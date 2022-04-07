@@ -1,6 +1,5 @@
-package dev.drawethree.LicenseSystem.security.service;
+package dev.drawethree.LicenseSystem.auth.user;
 
-import dev.drawethree.LicenseSystem.security.UserDetailsImpl;
 import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

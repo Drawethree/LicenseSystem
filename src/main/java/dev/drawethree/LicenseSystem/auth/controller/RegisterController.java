@@ -1,4 +1,4 @@
-package dev.drawethree.LicenseSystem.user.controller.auth;
+package dev.drawethree.LicenseSystem.auth.controller;
 
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import dev.drawethree.LicenseSystem.user.model.User;
@@ -37,7 +37,7 @@ public class RegisterController {
         }
 
         model.addAttribute("user", new User());
-        return "user/register";
+        return "auth/register";
     }
 
     @PostMapping("/register")
@@ -46,7 +46,7 @@ public class RegisterController {
         userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "user/register";
+            return "auth/register";
         }
 
         user.setCreatedAt(LocalDateTime.now());

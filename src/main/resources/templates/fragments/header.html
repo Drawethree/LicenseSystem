@@ -32,16 +32,23 @@
                 <a class="nav-link" href="/" th:href="@{/}"><i class="fa-solid fa-house"></i>&nbsp;Home</a>
             </li>
 
+            <div sec:authorize="isAuthenticated()">
+                <li class="nav-item nav-link">
+                    <a href="/register" th:href="@{/user}" class="nav-link"><i
+                            class="fa-solid fa-user"></i>&nbsp;User Panel</a>
+                </li>
+            </div>
+
             <div sec:authorize="hasAuthority('CREATOR')">
                 <li class="nav-item nav-link">
-                    <a href="/panel/software" th:href="@{/software/create}" class="nav-link"><i
+                    <a href="/panel/software" th:href="@{/user/software/create}" class="nav-link"><i
                             class="fa-solid fa-table-columns"></i>&nbsp;Create New Software</a>
                 </li>
             </div>
 
             <div sec:authorize="hasAuthority('CREATOR')">
                 <li class="nav-item nav-link">
-                    <a href="/panel/software" th:href="@{/license/create}" class="nav-link"><i
+                    <a href="/panel/software" th:href="@{/user/licenses/create}" class="nav-link"><i
                             class="fa-solid fa-table-columns"></i>&nbsp;Create New License</a>
                 </li>
             </div>

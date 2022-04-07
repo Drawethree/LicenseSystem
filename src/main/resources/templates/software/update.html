@@ -23,7 +23,7 @@
         <h3>Update Software</h3>
         <hr>
         <p class="h4 mb-4">Update Software</p>
-        <form action="#" th:action="@{/software/update}" th:object="${software}" method="post">
+        <form action="#" th:action="@{/user/software/update}" th:object="${software}" method="post">
             <input type="hidden" th:field="*{id}"/>
 
             <div class="form-group">
@@ -51,7 +51,7 @@
             </button>
         </form>
         <hr>
-        <a th:href="@{/software}">Back to all softwares</a>
+        <a th:href="@{/user/software}">Back to Your Software</a>
     </div>
 </main>
 

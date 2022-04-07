@@ -1,4 +1,4 @@
-package dev.drawethree.LicenseSystem.user.controller.auth;
+package dev.drawethree.LicenseSystem.auth.controller;
 
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,6 @@ public class LoginController {
             model.addAttribute("error", "Your username and password is invalid.");
         }
 
-        return "user/login";
+        return "auth/login";
     }
 }

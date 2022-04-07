@@ -1,8 +1,10 @@
 package dev.drawethree.LicenseSystem.license.service;
 
+import dev.drawethree.LicenseSystem.license.generation.LicenseGenerator;
 import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.license.repository.LicenseRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,8 +17,11 @@ public class LicenseServiceImpl implements LicenseService {
 
     private final LicenseRepository licenseRepository;
 
-    public LicenseServiceImpl(LicenseRepository licenseRepository) {
+    private final LicenseGenerator licenseGenerator;
+
+    public LicenseServiceImpl(LicenseRepository licenseRepository, @Qualifier("UUIDLicenseGenerator") LicenseGenerator licenseGenerator) {
         this.licenseRepository = licenseRepository;
+        this.licenseGenerator = licenseGenerator;
     }
 
     @Override
@@ -67,6 +72,11 @@ public class LicenseServiceImpl implements LicenseService {
     @Override
     public Optional<License> findById(int id) {
         return licenseRepository.findById(id);
+    }
+
+    @Override
+    public String generateLicenseKey() {
+        return licenseGenerator.generateLicenseKey();
     }
 
 }
