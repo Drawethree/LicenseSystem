@@ -16,12 +16,7 @@
 <body>
 
 
-<div th:if="${login}" class="alert alert-success alert-dismissible fade show" role="alert">
-    Successfully logged in
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+
 <!-- ALERTS
 <div th:if="${logout}" class="alert alert-info alert-dismissible fade show" role="alert">
     You were logged out.
@@ -30,31 +25,28 @@
     </button>
 </div>
 
-<div th:if="${register}" class="alert alert-success alert-dismissible fade show" role="alert">
-    Successfully registered account! You can now login.
+<div th:if="${login}" class="alert alert-success alert-dismissible fade show" role="alert">
+    Successfully logged in
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-</div> -->
+</div>
+-->
 
 <div th:replace="fragments/header :: header"></div>
 
+<div th:if="${registerSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+    Successfully registered account and auto-logged in!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <main>
     <div class="container">
-
-        <!-- debug user -->
-        <div sec:authorize="hasAuthority('CREATOR')">User is creator</div>
-        <div sec:authorize="hasAuthority('CUSTOMER')">User is customer</div>
-        <div sec:authorize="hasAuthority('ADMIN')">User is admin</div>
-        <div sec:authorize="isAuthenticated()">
-            Text visible only to authenticated users.
-        </div>
-        Authenticated username:
-        <div sec:authentication="name"></div>
-        <!-- debug user -->
-
         <div class="px-4 py-5 my-5 text-center">
-            <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
+            <img class="img-fluid" style="max-width: 25%" th:src="@{/images/logo.png}" alt=""
+                 src="../static/images/logo.png"/>
             <h1 class="display-5 fw-bold">License System</h1>
             <div class="col-lg-6 mx-auto">
                 <p class="lead mb-4">Create and Manage licenses for your premium software.</p>
@@ -74,31 +66,46 @@
 
     <div class="b-example-divider"></div>
 
-    <div class="container" th:if="${software_page.content.size() > 0}">
-        <p class="h4">Public Softwares</p>
-        <div class="row-md-8" th:each="software : ${software_page.content}">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h2 class="card-header" th:text="${software.name}"></h2>
-                    <p class="card-text" th:text="${software.description}"></p>
-                    <i class="fa-solid fa-user"></i><small class="text-muted"
-                                                           th:text="'&nbsp;Created By: ' + ${software.creator.username}"></small>
-                    <i class="fa-solid fa-address-card"></i><small class="text-muted"
-                                                                   th:text="'&nbsp;' + ${software.getActiveLicenses().size()} + ' Active Liceses'"></small>
-                </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">What is License System about?</h2>
+                <p class="card-text">License system is a web application where you can create and manage licenses for
+                    customers using your
+                    software.
+                    Your customers need to register an account on our site to redeem their
+                    licenses.
+                </p>
+                <a th:href="@{/register}" href="#" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>&nbsp;Register
+                    an account</a>
             </div>
-            <br/>
         </div>
 
-        <div class="row" th:if="${software_page.totalPages > 0}">
-            <ul class="pagination pagination-lg" th:each="pageNumber : ${page_numbers}">
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/(page=${pageNumber})}"
-                       th:text="${pageNumber}"></a>
-                </li>
-            </ul>
+        <div class="card ">
+            <div class="card-body">
+                <h2 class="card-title">Using as Creator</h2>
+                <p class="card-text">After registering your account, start by creating a
+                    software in our user panel.
+                    In user panel you can create licenses for your software and give
+                    the license keys to your customers to redeem.</p>
+                <a th:href="@{/user}" href="#" class="btn btn-primary"><i class="fa-solid fa-user"></i>&nbsp;Creator
+                    Panel</a>
+            </div>
         </div>
 
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Using as Customer</h2>
+                <p class="card-text">Have you purchased a license from one of our creators? Lets redeem your
+                    license! You can also view all of your licenses in our customer panel.</p>
+                <a th:href="@{/user/}" href="#" class="btn btn-primary"><i class="fa-solid fa-user"></i>&nbsp;Customer
+                    Panel
+                </a>
+                <a th:href="@{/user/licenses/activate}" href="#" class="btn btn-primary"><i class="fa-solid fa-key"></i>&nbsp;Activate
+                    License
+                </a>
+            </div>
+        </div>
     </div>
 </main>
 

@@ -19,12 +19,11 @@ public class LoginController {
     public String showLoginPage(Model model, String error) {
 
         if (securityService.isAuthenticated()) {
-            model.addAttribute("login",true);
             return "redirect:/";
         }
 
         if (error != null) {
-            model.addAttribute("error", "Your username and password is invalid.");
+            model.addAttribute("error", "Your username or password is invalid.");
         }
 
         return "auth/login";

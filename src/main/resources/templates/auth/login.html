@@ -31,20 +31,31 @@
         <div class="col-md-4 mx-auto">
             <!-- LOGIN FORM -->
             <form th:action="@{/login}" method="post">
-                <h1 class="h3 mb-3 fw-normal">Log In</h1>
+                <h1 class="h3 mb-3 text-center">Log In</h1>
 
                 <!-- USERNAME -->
-                <div class="form-floating">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" class="form-control" id="username"
-                           placeholder="Username" required autofocus>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
+                        </div>
+
+                        <input type="text" name="username" class="form-control" id="username"
+                               placeholder="Username" required autofocus>
+                    </div>
                 </div>
 
                 <!-- PASSWORD -->
-                <div class="form-floating">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" id="password"
-                           placeholder="Password" required>
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
+                        </div>
+
+                        <input type="password" class="form-control" name="password" id="password"
+                               placeholder="Password" required>
+                    </div>
                     <span class="has-error text-danger" th:text="${error}"></span>
                 </div>
 

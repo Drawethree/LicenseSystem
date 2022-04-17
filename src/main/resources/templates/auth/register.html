@@ -31,38 +31,55 @@
             <!-- REGISTER FORM -->
             <form th:action="@{/register}" th:object="${user}" method="POST">
 
-                <h1 class="h3 mb-3 fw-normal">Register your account</h1>
+                <h1 class="h3 mb-3 text-center">Register your account</h1>
 
                 <!-- EMAIL INPUT -->
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input th:field="*{email}" type="email" class="form-control" id="email" placeholder="Your Email"
-                           autofocus required>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-envelope"></i></div>
+                        </div>
+
+                        <input th:field="*{email}" type="email" class="form-control" id="email" placeholder="Your Email"
+                               autofocus required>
+                    </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('email')}"
                           th:errors="*{email}"></span>
                 </div>
 
                 <!-- USERNAME INPUT -->
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input th:field="*{username}" type="text" class="form-control" id="username"
-                           placeholder="Your Username" required>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
+                        </div>
+
+                        <input th:field="*{username}" type="text" class="form-control" id="username"
+                               placeholder="Your Username" required>
+                    </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('username')}"
                           th:errors="*{username}"></span>
                 </div>
 
                 <!-- PASSWORD INPUT -->
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input th:field="*{password}" type="password" class="form-control" id="password"
-                           placeholder="Your Password">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
+                        </div>
+
+                        <input th:field="*{password}" type="password" class="form-control" id="password"
+                               placeholder="Your Password" required>
+                    </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('password')}"
                           th:errors="*{password}"></span>
                 </div>
 
                 <!-- ACCOUNT TYPE INPUT -->
-                <div class="form-group">
-                    <label for="account-type">Account Type</label>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa-solid fa-list"></i></div>
+                    </div>
                     <select id="account-type" class="form-control" th:field="*{roles}" required>
                         <option value="CREATOR">Creator</option>
                         <option value="CUSTOMER">Customer</option>

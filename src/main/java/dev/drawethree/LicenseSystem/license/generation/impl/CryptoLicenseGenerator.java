@@ -8,6 +8,6 @@ public class CryptoLicenseGenerator implements LicenseGenerator {
 
     @Override
     public String generateLicenseKey() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 }

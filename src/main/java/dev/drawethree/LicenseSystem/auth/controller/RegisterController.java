@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +29,6 @@ public class RegisterController {
         this.userValidator = userValidator;
     }
 
-
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
 
@@ -41,7 +41,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String register(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         userValidator.validate(user, bindingResult);
 
@@ -56,6 +56,8 @@ public class RegisterController {
         userService.save(user);
 
         securityService.autoLogin(user.getUsername(), rawPw);
+
+        redirectAttributes.addFlashAttribute("registerSuccess", true);
 
         return "redirect:/";
     }

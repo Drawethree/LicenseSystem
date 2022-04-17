@@ -10,9 +10,13 @@ public interface UserService {
 
     void save(User user);
 
+    void deleteById(int id);
+
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findById(int id);
 
     Optional<User> findTopByOrderByCreatedAtDesc();
 

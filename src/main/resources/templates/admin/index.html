@@ -32,29 +32,27 @@
         <!-- debug user -->
 
         <div class="px-4 py-5 my-5 text-center">
-            <img class="img-fluid" th:src="@{/images/logo.png}" style="max-width: 25%" alt=""
-                 src="../static/images/logo.png"/>
+            <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
 
-            <h1 sec:authorize="hasAuthority('CREATOR')" class="display-5 fw-bold">Creator Panel</h1>
-            <h1 sec:authorize="hasAuthority('CUSTOMER')" class="display-5 fw-bold">Customer Panel</h1>
+            <h1 class="display-5 fw-bold">Admin Panel</h1>
 
             <div class="col-lg-6 mx-auto">
                 <p class="lead" th:text="'Welcome, ' + ${user.username} + '!'"></p>
                 <p class="lead mb-4">What would you like to do today?</p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <div class="btn-group btn-group-lg" role="group" aria-label="...">
-                        <!-- YOUR SOFTWARE -->
-                        <a sec:authorize="hasAuthority('CREATOR')" th:href="@{/user/software}"
+                    <div sec:authorize="hasAuthority('ADMIN')" class="btn-group btn-group-lg" role="group" aria-label="...">
+                        <!-- MANAGE USERS -->
+                        <a th:href="@{/admin/users}"
                            class="btn btn-outline-primary btn-lg"><i
-                                class="fa-solid fa-right-to-bracket"></i>&nbsp;Manage Your Software</a>
-                        <!-- YOUR LICENSES -->
-                        <a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{/user/licenses}"
+                                class="fa-solid fa-right-to-bracket"></i>&nbsp;Manage Users</a>
+                        <!-- MANAGE SOFTWARES -->
+                        <a th:href="@{/admin/software}"
                            class="btn btn-outline-secondary btn-lg"><i
-                                class="fa-solid fa-user-plus"></i>&nbsp;Your Licenses</a>
-                        <!-- ACTIVATE LICENSE -->
-                        <a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{/user/licenses/activate}"
+                                class="fa-solid fa-user-plus"></i>&nbsp;Manage Softwares</a>
+                        <!-- MANAGE LICENSES -->
+                        <a th:href="@{/admin/licenses}"
                            class="btn btn-outline-secondary btn-lg"><i
-                                class="fa-solid fa-key"></i>&nbsp;Activate License</a>
+                                class="fa-solid fa-key"></i>&nbsp;Manage Licenses</a>
                     </div>
                 </div>
             </div>

@@ -32,32 +32,45 @@
                 <a class="nav-link" href="/" th:href="@{/}"><i class="fa-solid fa-house"></i>&nbsp;Home</a>
             </li>
 
-            <div sec:authorize="isAuthenticated()">
+            <div sec:authorize="isAuthenticated() && !hasAuthority('ADMIN')">
                 <li class="nav-item nav-link">
-                    <a href="/register" th:href="@{/user}" class="nav-link"><i
+                    <a href="/user" th:href="@{/user}" class="nav-link"><i
                             class="fa-solid fa-user"></i>&nbsp;User Panel</a>
                 </li>
             </div>
 
-            <div sec:authorize="hasAuthority('CREATOR')">
+            <div sec:authorize="hasAuthority('ADMIN')">
                 <li class="nav-item nav-link">
-                    <a href="/panel/software" th:href="@{/user/software/create}" class="nav-link"><i
-                            class="fa-solid fa-table-columns"></i>&nbsp;Create New Software</a>
+                    <a href="/admin" th:href="@{/admin}" class="nav-link"><i
+                            class="fa-solid fa-user"></i>&nbsp;Admin Panel</a>
                 </li>
             </div>
 
             <div sec:authorize="hasAuthority('CREATOR')">
                 <li class="nav-item nav-link">
-                    <a href="/panel/software" th:href="@{/user/licenses/create}" class="nav-link"><i
-                            class="fa-solid fa-table-columns"></i>&nbsp;Create New License</a>
+                    <a href="/user/software/create" th:href="@{/user/software/create}" class="nav-link"><i
+                            class="fa-solid fa-circle-plus"></i>&nbsp;Create New Software</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAuthority('CREATOR')">
+                <li class="nav-item nav-link">
+                    <a href="/user/licenses/create" th:href="@{/user/licenses/create}" class="nav-link"><i
+                            class="fa-solid fa-circle-plus"></i>&nbsp;Create New License</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAuthority('CUSTOMER')">
+                <li class="nav-item nav-link">
+                    <a href="/user/licenses/activate" th:href="@{/user/licenses/activate}" class="nav-link"><i
+                            class="fa-solid fa-key"></i>&nbsp;Activate License</a>
                 </li>
             </div>
 
             <li class="nav-item nav-link">
-                <a href="/license/activate" th:href="@{/license/activate}" class="nav-link"><i
-                        class="fa-solid fa-key"></i>&nbsp;Activate License</a>
+                <a href="/software/list" th:href="@{/software/list}" class="nav-link"><i
+                        class="fa-solid fa-list"></i>&nbsp;Public Software</a>
             </li>
-
         </ul>
 
         <ul class="navbar-nav">
