@@ -19,29 +19,34 @@
 <div th:replace="fragments/header :: header"></div>
 
 <main>
-    <div class="container" th:if="${software_page.content.size() > 0}">
-        <p class="h4">Public Softwares</p>
-        <div class="row-md-8" th:each="software : ${software_page.content}">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h2 class="card-header" th:text="${software.name}"></h2>
-                    <p class="card-text" th:text="${software.description}"></p>
-                    <i class="fa-solid fa-user"></i><small class="text-muted"
-                                                           th:text="'&nbsp;Created By: ' + ${software.creator.username}"></small>
-                    <i class="fa-solid fa-address-card"></i><small class="text-muted"
-                                                                   th:text="'&nbsp;' + ${software.getActiveLicenses().size()} + ' Active Liceses'"></small>
+    <div class="container px-4 py-5 my-5" th:if="${software_page.content.size() > 0}">
+        <div class="col-md-12 mx-auto">
+            <h3 class="text-center">Public Software</h3>
+            <hr>
+            <p class="h5 text-center text-danger" th:if="${software_page.content.isEmpty()}">No public software
+                found.</p>
+            <div class="row-md-12" th:each="software : ${software_page.content}">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-header" th:text="${software.name}"></h2>
+                        <p class="card-text" th:text="${software.description}"></p>
+                        <i class="fa-solid fa-user"></i><small class="text-muted"
+                                                               th:text="'&nbsp;Created By: ' + ${software.creator.username}"></small>
+                        <i class="fa-solid fa-address-card"></i><small class="text-muted"
+                                                                       th:text="'&nbsp;' + ${software.getActiveLicenses().size()} + ' Active Licenses'"></small>
+                    </div>
                 </div>
+                <hr/>
             </div>
-            <br/>
-        </div>
 
-        <div class="row" th:if="${software_page.totalPages > 0}">
-            <ul class="pagination pagination-lg" th:each="pageNumber : ${page_numbers}">
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/(page=${pageNumber})}"
-                       th:text="${pageNumber}"></a>
-                </li>
-            </ul>
+            <div class="row mx-auto" th:if="${software_page.totalPages > 0}">
+                <ul class="pagination pagination-lg" th:each="pageNumber : ${page_numbers}">
+                    <li class="page-item">
+                        <a class="page-link" href="#" th:href="@{/software/list(page=${pageNumber})}"
+                           th:text="${pageNumber}"></a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 

@@ -28,6 +28,6 @@ public class SoftwareRestController {
 
 	@GetMapping
 	public List<Software> getAll() {
-		return softwareService.findAll();
+		return softwareService.findAllByVisible(true);
 	}
 }

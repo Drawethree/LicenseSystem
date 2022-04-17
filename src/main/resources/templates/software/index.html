@@ -18,46 +18,67 @@
 
 <div th:replace="fragments/header :: header"></div>
 
+<div th:if="${softwareCreated}" class="alert alert-success alert-dismissible fade show" role="alert">
+    Successfully created software!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div th:if="${softwareDeleted}" class="alert alert-success alert-dismissible fade show" role="alert">
+    Successfully deleted software!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div th:if="${softwareUpdated}" class="alert alert-success alert-dismissible fade show" role="alert">
+    Successfully updated a software!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <main>
-    <div class="container">
-        <hr>
-        <h3>Your Software</h3>
-        <hr>
-        <p class="h4 mb-4" th:if="${softwares.isEmpty()}">You have not created a software yet. Let's do that!</p>
-        <table th:if="${softwares.size() > 0 }" class="table table-bordered table-hovertable-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th><i class="fa-solid fa-pen-to-square"></i>&nbsp;Name</th>
-                <th><i class="fa-solid fa-pen-to-square"></i>&nbsp;Description</th>
-                <th><i class="fa-solid fa-calendar-days"></i>&nbsp;Created At</th>
-                <th><i class="fa-solid fa-eye"></i>&nbsp;Public Visibility</th>
-                <th><i class="fa-solid fa-bars"></i>&nbsp;Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="software : ${softwares}">
-                <td th:text="${software.name}"></td>
-                <td th:text="${software.description}"></td>
-                <td th:text="${#temporals.format(software.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="${software.isVisible() ? 'Visible' : 'Not Visible'}"></td>
-                <td>
-                    <a th:href="@{/user/software/licenses(softwareId=${software.getId()})}"
-                       class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-key"></i>&nbsp;Manage
-                        Licenses</a>
-                    <a th:href="@{/user/software/update(softwareId=${software.getId()})}"
-                       class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Update</a>
-                    <a th:href="@{/user/software/delete(softwareId=${software.getId()})}"
-                       class="btn btn-outline-danger btn-sm"
-                       onclick="if (!(confirm('Are you sure you want to delete this software?'))) return false "><i
-                            class="fa-solid fa-delete-left"></i></i>&nbsp;Delete</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- CREATE NEW SOFTWARE BUTTON -->
-        <a th:href="@{/user/software/create}" class="btn btn-
-    primary col-12"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create New
-            Software</a>
+    <div class="container px-4 py-5 my-5">
+        <div class="col-md-12 mx-auto">
+            <h3 class="text-center">Your Software</h3>
+            <hr>
+            <p class="h5 text-center text-danger" th:if="${softwares.isEmpty()}">You have no software.</p>
+            <table th:if="${softwares.size() > 0 }" class="table table-bordered table-hovertable-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th><i class="fa-solid fa-pen-to-square"></i>&nbsp;Name</th>
+                    <th><i class="fa-solid fa-pen-to-square"></i>&nbsp;Description</th>
+                    <th><i class="fa-solid fa-calendar-days"></i>&nbsp;Created At</th>
+                    <th><i class="fa-solid fa-eye"></i>&nbsp;Public Visibility</th>
+                    <th><i class="fa-solid fa-bars"></i>&nbsp;Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="software : ${softwares}">
+                    <td th:text="${software.name}"></td>
+                    <td th:text="${software.description}"></td>
+                    <td th:text="${#temporals.format(software.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${software.isVisible() ? 'Visible' : 'Not Visible'}"></td>
+                    <td>
+                        <a href="#" th:href="@{/software/licenses(softwareId=${software.getId()})}"
+                           class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-key"></i>&nbsp;Manage
+                            Licenses</a>
+                        <a href="#" th:href="@{/software/update(softwareId=${software.getId()})}"
+                           class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Update</a>
+                        <a href="#" th:href="@{/software/delete(softwareId=${software.getId()})}"
+                           class="btn btn-outline-danger btn-sm"
+                           onclick="if (!(confirm('Are you sure you want to delete this software?'))) return false "><i
+                                class="fa-solid fa-delete-left"></i></i>&nbsp;Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- CREATE NEW SOFTWARE BUTTON -->
+            <a href="#" th:href="@{/software/create}" class="btn btn-outline-success w-100"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create New
+                Software</a>
+        </div>
     </div>
 </main>
 

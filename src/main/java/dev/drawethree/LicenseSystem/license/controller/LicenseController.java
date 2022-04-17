@@ -1,22 +1,23 @@
 package dev.drawethree.LicenseSystem.license.controller;
 
 import dev.drawethree.LicenseSystem.license.model.License;
-import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.license.service.LicenseService;
-import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import dev.drawethree.LicenseSystem.license.validation.LicenseValidator;
+import dev.drawethree.LicenseSystem.security.service.SecurityService;
+import dev.drawethree.LicenseSystem.user.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("user/licenses")
+@RequestMapping("license")
 public class LicenseController {
 
     private final LicenseService licenseService;
@@ -32,7 +33,7 @@ public class LicenseController {
     }
 
     @GetMapping
-    public String index(Model model) {
+    public String showIndex(Model model) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -67,7 +68,7 @@ public class LicenseController {
 
     @PostMapping("/create")
     @PreAuthorize("hasAnyAuthority('CREATOR','ADMIN')")
-    public String createLicense(@ModelAttribute("license") License license, BindingResult bindingResult) {
+    public String createLicense(@ModelAttribute("license") License license, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -82,19 +83,26 @@ public class LicenseController {
         license.setCreatedAt(LocalDateTime.now());
 
         licenseService.save(license);
-        return "redirect:/user/licenses";
+
+        redirectAttributes.addFlashAttribute("licenseCreated", true);
+
+        return "redirect:/software";
     }
 
     @GetMapping("/delete")
     @PreAuthorize("hasAnyAuthority('CREATOR','ADMIN')")
-    public String deleteLicense(@RequestParam("licenseId") int id) {
+    public String deleteLicense(@RequestParam("licenseId") int id, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
         }
 
         licenseService.deleteById(id);
-        return "redirect:/user/licenses";
+
+        redirectAttributes.addFlashAttribute("licenseDeleted", true);
+
+
+        return "redirect:/license";
     }
 
     @GetMapping("/activate")
@@ -112,7 +120,7 @@ public class LicenseController {
 
     @PostMapping("/activate")
     @PreAuthorize("hasAnyAuthority('CUSTOMER','CREATOR','ADMIN')")
-    public String activateLicense(@ModelAttribute("license") License tempLicense, BindingResult bindingResult) {
+    public String activateLicense(@ModelAttribute("license") License tempLicense, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -142,6 +150,9 @@ public class LicenseController {
         }
 
         licenseService.save(license);
-        return "redirect:/user/licenses";
+
+        redirectAttributes.addFlashAttribute("licenseActivated",true);
+
+        return "redirect:/license";
     }
 }

@@ -11,7 +11,7 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>Create New Licenses</title>
+    <title>Create New License</title>
 </head>
 
 <body>
@@ -19,20 +19,26 @@
 <div th:replace="fragments/header :: header"></div>
 
 <main>
-    <div class="container">
-        <div class="col md-4">
-            <h3>Create New License</h3>
+    <div class="container px-4 py-5 my-5">
+        <div class="col-md-8 mx-auto">
+            <h3 class="text-center">Create New License</h3>
             <hr>
-            <p class="h4 mb-4">Create New License</p>
-            <form action="#" th:action="@{/user/licenses/create}" th:object="${license}" method="post">
+            <form action="#" th:action="@{/license/create}" th:object="${license}" method="post">
 
                 <div class="form-group">
-                    <label for="software">Software</label>
-                    <select class="form-control mb-4 col-4" id="software" th:field="*{software}" name="software">
-                        <option th:each="software : ${softwares}"
-                                th:text="${software.name}"
-                                th:value="${software.id}"></option>
-                    </select>
+                    <label for="software">Select a software</label>
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-gear"></i></div>
+                        </div>
+
+                        <select class="form-control" id="software" th:field="*{software}" name="software">
+                            <option th:each="software : ${softwares}"
+                                    th:text="${software.name}"
+                                    th:value="${software.id}"></option>
+                        </select>
+                    </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('software')}"
                           th:errors="*{software}"></span>
                 </div>
@@ -46,26 +52,45 @@
 
                 <div class="form-group">
                     <label for="licenseKey">License Key</label>
-                    <input type="text" id="licenseKey" th:field="*{licenseKey}" class="form-control mb-4 col-4"
-                           placeholder="License Key" th:value="${licenseKey}" required readonly>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
+                        </div>
+
+                        <input type="text" id="licenseKey" th:field="*{licenseKey}" class="form-control"
+                               placeholder="License Key" th:value="${licenseKey}" required readonly>
+                    </div>
+
                 </div>
 
                 <div class="form-group">
                     <label for="duration-amount">License Duration In Days (0 = Permanent)</label>
-                    <input type="number" min=0 value="0" id="duration-amount" th:field="*{duration}"
-                           class="form-control mb-4 col-4"
-                           placeholder="Duration In Days" required>
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-calendar"></i></div>
+                        </div>
+
+                        <input type="number" min=0 value="0" id="duration-amount" th:field="*{duration}"
+                               class="form-control"
+                               placeholder="Duration In Days" required>
+                    </div>
+
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('duration')}"
                           th:errors="*{duration}"></span>
                 </div>
 
-                <button type="submit" class="btn btn-success col-2"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save
+                <button type="submit" class="btn btn-success w-100"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Create
+                    License
                 </button>
+
             </form>
             <hr>
-            <a th:href="@{/user/licenses}" class="btn btn-outline-secondary"><i class="fa-solid fa-circle-arrow-left"></i>
+
+            <a href="#" th:href="@{/software}" class="btn btn-outline-secondary w-100"><i
+                    class="fa-solid fa-circle-arrow-left"></i>
                 &nbsp;Back to
-                Licenses</a>
+                Your Software</a>
         </div>
     </div>
 </main>

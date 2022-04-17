@@ -11,7 +11,7 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>License System</title>
+    <title>Admin Panel</title>
 </head>
 <body>
 
@@ -19,18 +19,6 @@
 
 <main>
     <div class="container">
-
-        <!-- debug user -->
-        <div sec:authorize="hasAuthority('CREATOR')">User is creator</div>
-        <div sec:authorize="hasAuthority('CUSTOMER')">User is customer</div>
-        <div sec:authorize="hasAuthority('ADMIN')">User is admin</div>
-        <div sec:authorize="isAuthenticated()">
-            Text visible only to authenticated users.
-        </div>
-        Authenticated username:
-        <div sec:authentication="name"></div>
-        <!-- debug user -->
-
         <div class="px-4 py-5 my-5 text-center">
             <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
 
@@ -40,28 +28,24 @@
                 <p class="lead" th:text="'Welcome, ' + ${user.username} + '!'"></p>
                 <p class="lead mb-4">What would you like to do today?</p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <div sec:authorize="hasAuthority('ADMIN')" class="btn-group btn-group-lg" role="group" aria-label="...">
+                    <div sec:authorize="hasAuthority('ADMIN')" class="tn-group-lg">
                         <!-- MANAGE USERS -->
-                        <a th:href="@{/admin/users}"
+                        <a href="#" th:href="@{/admin/users}"
                            class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-right-to-bracket"></i>&nbsp;Manage Users</a>
                         <!-- MANAGE SOFTWARES -->
-                        <a th:href="@{/admin/software}"
-                           class="btn btn-outline-secondary btn-lg"><i
+                        <a href="#" th:href="@{/admin/software}"
+                           class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-user-plus"></i>&nbsp;Manage Softwares</a>
                         <!-- MANAGE LICENSES -->
-                        <a th:href="@{/admin/licenses}"
-                           class="btn btn-outline-secondary btn-lg"><i
+                        <a href="#" th:href="@{/admin/licenses}"
+                           class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-key"></i>&nbsp;Manage Licenses</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="b-example-divider"></div>
     </div>
-
-    <div class="b-example-divider"></div>
 </main>
 
 <div th:replace="fragments/footer :: footer"></div>

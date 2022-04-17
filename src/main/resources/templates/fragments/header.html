@@ -10,8 +10,6 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
-
-    <title>License System</title>
 </head>
 <body>
 
@@ -34,41 +32,41 @@
 
             <div sec:authorize="isAuthenticated() && !hasAuthority('ADMIN')">
                 <li class="nav-item nav-link">
-                    <a href="/user" th:href="@{/user}" class="nav-link"><i
+                    <a href="#" th:href="@{/user}" class="nav-link"><i
                             class="fa-solid fa-user"></i>&nbsp;User Panel</a>
                 </li>
             </div>
 
             <div sec:authorize="hasAuthority('ADMIN')">
                 <li class="nav-item nav-link">
-                    <a href="/admin" th:href="@{/admin}" class="nav-link"><i
+                    <a href="#" th:href="@{/admin}" class="nav-link"><i
                             class="fa-solid fa-user"></i>&nbsp;Admin Panel</a>
                 </li>
             </div>
 
             <div sec:authorize="hasAuthority('CREATOR')">
                 <li class="nav-item nav-link">
-                    <a href="/user/software/create" th:href="@{/user/software/create}" class="nav-link"><i
+                    <a href="#" th:href="@{/software/create}" class="nav-link"><i
                             class="fa-solid fa-circle-plus"></i>&nbsp;Create New Software</a>
                 </li>
             </div>
 
             <div sec:authorize="hasAuthority('CREATOR')">
                 <li class="nav-item nav-link">
-                    <a href="/user/licenses/create" th:href="@{/user/licenses/create}" class="nav-link"><i
+                    <a href="#" th:href="@{/license/create}" class="nav-link"><i
                             class="fa-solid fa-circle-plus"></i>&nbsp;Create New License</a>
                 </li>
             </div>
 
             <div sec:authorize="hasAuthority('CUSTOMER')">
                 <li class="nav-item nav-link">
-                    <a href="/user/licenses/activate" th:href="@{/user/licenses/activate}" class="nav-link"><i
+                    <a href="#" th:href="@{/license/activate}" class="nav-link"><i
                             class="fa-solid fa-key"></i>&nbsp;Activate License</a>
                 </li>
             </div>
 
             <li class="nav-item nav-link">
-                <a href="/software/list" th:href="@{/software/list}" class="nav-link"><i
+                <a href="#" th:href="@{/software/list}" class="nav-link"><i
                         class="fa-solid fa-list"></i>&nbsp;Public Software</a>
             </li>
         </ul>
@@ -79,14 +77,14 @@
             <div sec:authorize="!isAuthenticated()">
 
                 <li class="nav-item nav-link">
-                    <a href="/login" th:href="@{/login}" class="nav-link"><i
+                    <a href="#" th:href="@{/login}" class="nav-link"><i
                             class="fa-solid fa-right-to-bracket"></i>&nbsp;Login</a>
                 </li>
             </div>
 
             <div sec:authorize="!isAuthenticated()">
                 <li class="nav-item nav-link">
-                    <a href="/register" th:href="@{/register}" class="nav-link"><i
+                    <a href="#" th:href="@{/register}" class="nav-link"><i
                             class="fa-solid fa-user-plus"></i>&nbsp;Register</a>
                 </li>
             </div>

@@ -40,24 +40,24 @@ public class User {
 
     @OrderBy("name desc")
     @OneToMany(mappedBy = "creator", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
-    @ToString.Exclude
-    @JsonIgnore
     private List<Software> softwares;
 
     @OrderBy("expireDate desc")
     @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
-    @ToString.Exclude
     @JsonIgnore
     private List<License> licenses;
 
+    @JsonIgnore
     public boolean isCustomer() {
         return roles.contains("CUSTOMER");
     }
 
+    @JsonIgnore
     public boolean isAdmin() {
         return roles.contains("ADMIN");
     }
 
+    @JsonIgnore
     public boolean isCreator() {
         return roles.contains("CREATOR");
     }

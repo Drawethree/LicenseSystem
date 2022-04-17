@@ -10,11 +10,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 
 @Controller
+@RequestMapping("register")
 public class RegisterController {
 
     private final UserService userService;
@@ -29,7 +31,7 @@ public class RegisterController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping("/register")
+    @GetMapping
     public String showRegisterPage(Model model) {
 
         if (securityService.isAuthenticated()) {
@@ -40,7 +42,7 @@ public class RegisterController {
         return "auth/register";
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public String register(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         userValidator.validate(user, bindingResult);

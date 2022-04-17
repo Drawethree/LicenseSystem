@@ -5,17 +5,22 @@ import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.software.service.SoftwareService;
 import dev.drawethree.LicenseSystem.software.validation.SoftwareValidator;
 import dev.drawethree.LicenseSystem.user.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("user/software")
+@RequestMapping("software")
 public class SoftwareController {
 
     private final SoftwareService softwareService;
@@ -31,7 +36,7 @@ public class SoftwareController {
     }
 
     @GetMapping
-    public String index(Model model) {
+    public String showIndex(Model model) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -57,6 +62,32 @@ public class SoftwareController {
         return "software/create";
     }
 
+    @GetMapping("/list")
+    public String showPublicSoftwares(@RequestParam("page") Optional<Integer> page, Model model) {
+
+        int currentPage = page.orElse(1);
+        int pageSize = 5;
+
+        Page<Software> softwarePage = softwareService.findPaginated(PageRequest.of(currentPage - 1, pageSize), true);
+
+        int totalPages = softwarePage.getTotalPages();
+
+        if (currentPage > totalPages && totalPages > 0) {
+            return "redirect:/software/list";
+        }
+
+        model.addAttribute("software_page", softwarePage);
+
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("page_numbers", pageNumbers);
+        }
+
+        return "software/list";
+    }
+
     @GetMapping("/update")
     public String showUpdateSoftwareForm(@RequestParam("softwareId") int id, Model model) {
 
@@ -77,7 +108,7 @@ public class SoftwareController {
     }
 
     @PostMapping("/update")
-    public String updateSoftware(@ModelAttribute("software") Software software, BindingResult bindingResult) {
+    public String updateSoftware(@ModelAttribute("software") Software software, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -90,22 +121,28 @@ public class SoftwareController {
         }
 
         softwareService.save(software);
-        return "redirect:/user/software";
+
+        redirectAttributes.addFlashAttribute("softwareUpdated",true);
+
+        return "redirect:/software";
     }
 
     @GetMapping("/delete")
-    public String deleteSoftware(@RequestParam("softwareId") int id) {
+    public String deleteSoftware(@RequestParam("softwareId") int id, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
         }
 
         softwareService.deleteById(id);
-        return "redirect:/user/software";
+
+        redirectAttributes.addFlashAttribute("softwareDeleted",true);
+
+        return "redirect:/software";
     }
 
     @PostMapping("/create")
-    public String createSoftware(@ModelAttribute("software") Software software, BindingResult bindingResult) {
+    public String createSoftware(@ModelAttribute("software") Software software, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -123,6 +160,9 @@ public class SoftwareController {
         software.setCreatedAt(LocalDateTime.now());
 
         softwareService.save(software);
-        return "redirect:/user/software";
+
+        redirectAttributes.addFlashAttribute("softwareCreated",true);
+
+        return "redirect:/software";
     }
 }

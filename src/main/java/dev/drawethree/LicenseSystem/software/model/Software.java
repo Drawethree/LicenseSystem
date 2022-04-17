@@ -43,6 +43,7 @@ public class Software {
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id", nullable = false)
+    @JsonIgnore
     private User creator;
 
     public Software(String name, String description) {
@@ -50,6 +51,7 @@ public class Software {
         this.description = description;
     }
 
+    @JsonIgnore
     public List<License> getActiveLicenses() {
         return licenses.stream().filter(License::isActive).collect(Collectors.toList());
     }

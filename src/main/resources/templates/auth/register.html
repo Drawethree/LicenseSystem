@@ -11,7 +11,7 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>License System - Register</title>
+    <title>Register</title>
 </head>
 <body>
 <!-- Registration failed
@@ -26,7 +26,7 @@
 <div th:replace="fragments/header :: header"></div>
 
 <main>
-    <div class="container form-login">
+    <div class="container px-4 py-5 my-5">
         <div class="col-md-4 mx-auto">
             <!-- REGISTER FORM -->
             <form th:action="@{/register}" th:object="${user}" method="POST">
@@ -36,6 +36,7 @@
                 <!-- EMAIL INPUT -->
                 <div class="form-group">
                     <div class="input-group">
+
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="fa-solid fa-envelope"></i></div>
                         </div>
@@ -76,14 +77,21 @@
                 </div>
 
                 <!-- ACCOUNT TYPE INPUT -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text"><i class="fa-solid fa-list"></i></div>
+                <div class="form-group">
+
+                    <label for="account-type">Select Account Type</label>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-list"></i></div>
+                        </div>
+
+                        <select id="account-type" class="form-control" th:field="*{roles}" required>
+                            <option value="CUSTOMER">Customer</option>
+                            <option value="CREATOR">Creator</option>
+                        </select>
                     </div>
-                    <select id="account-type" class="form-control" th:field="*{roles}" required>
-                        <option value="CREATOR">Creator</option>
-                        <option value="CUSTOMER">Customer</option>
-                    </select>
                 </div>
 
                 <br/>

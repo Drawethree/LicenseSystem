@@ -32,7 +32,7 @@ public class AdminController {
 	}
 
 	@GetMapping
-	public String showAdminPanel(Model model) {
+	public String showIndex(Model model) {
 
 		if (!securityService.isAuthenticated()) {
 			return "redirect:/login";
@@ -71,7 +71,7 @@ public class AdminController {
 		return "admin/software";
 	}
 
-	@GetMapping("/licenses")
+	@GetMapping("/license")
 	public String showManageLicensesPanel(Model model) {
 
 		if (!securityService.isAuthenticated()) {

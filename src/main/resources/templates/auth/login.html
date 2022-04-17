@@ -11,7 +11,7 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>License System - Log In</title>
+    <title>Log In</title>
 </head>
 <body>
 
@@ -30,7 +30,7 @@
     <div class="container px-4 py-5 my-5">
         <div class="col-md-4 mx-auto">
             <!-- LOGIN FORM -->
-            <form th:action="@{/login}" method="post">
+            <form class="form-login" th:action="@{/login}" method="post">
                 <h1 class="h3 mb-3 text-center">Log In</h1>
 
                 <!-- USERNAME -->
@@ -69,7 +69,7 @@
                 </button>
             </form>
 
-            <a th:href="@{/register}" class="w-100 btn btn-lg btn-outline-secondary"><i
+            <a href="#" th:href="@{/register}" class="btn btn-lg btn-outline-secondary w-100"><i
                     class="fa-solid fa-user-plus"></i>&nbsp;Register</a>
         </div>
     </div>

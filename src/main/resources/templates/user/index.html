@@ -11,7 +11,7 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>License System</title>
+    <title>User Panel</title>
 </head>
 <body>
 
@@ -19,18 +19,6 @@
 
 <main>
     <div class="container">
-
-        <!-- debug user -->
-        <div sec:authorize="hasAuthority('CREATOR')">User is creator</div>
-        <div sec:authorize="hasAuthority('CUSTOMER')">User is customer</div>
-        <div sec:authorize="hasAuthority('ADMIN')">User is admin</div>
-        <div sec:authorize="isAuthenticated()">
-            Text visible only to authenticated users.
-        </div>
-        Authenticated username:
-        <div sec:authentication="name"></div>
-        <!-- debug user -->
-
         <div class="px-4 py-5 my-5 text-center">
             <img class="img-fluid" th:src="@{/images/logo.png}" style="max-width: 25%" alt=""
                  src="../static/images/logo.png"/>
@@ -38,32 +26,28 @@
             <h1 sec:authorize="hasAuthority('CREATOR')" class="display-5 fw-bold">Creator Panel</h1>
             <h1 sec:authorize="hasAuthority('CUSTOMER')" class="display-5 fw-bold">Customer Panel</h1>
 
-            <div class="col-lg-6 mx-auto">
+            <div class="col-md-6 mx-auto">
                 <p class="lead" th:text="'Welcome, ' + ${user.username} + '!'"></p>
                 <p class="lead mb-4">What would you like to do today?</p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                    <div class="btn-group-lg">
                         <!-- YOUR SOFTWARE -->
-                        <a sec:authorize="hasAuthority('CREATOR')" th:href="@{/user/software}"
+                        <a href="#" sec:authorize="hasAuthority('CREATOR')" th:href="@{/software}"
                            class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-right-to-bracket"></i>&nbsp;Manage Your Software</a>
                         <!-- YOUR LICENSES -->
-                        <a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{/user/licenses}"
-                           class="btn btn-outline-secondary btn-lg"><i
+                        <a href="#" sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{/license}"
+                           class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-user-plus"></i>&nbsp;Your Licenses</a>
                         <!-- ACTIVATE LICENSE -->
-                        <a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{/user/licenses/activate}"
-                           class="btn btn-outline-secondary btn-lg"><i
+                        <a href="#" sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{/license/activate}"
+                           class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-key"></i>&nbsp;Activate License</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="b-example-divider"></div>
     </div>
-
-    <div class="b-example-divider"></div>
 </main>
 
 <div th:replace="fragments/footer :: footer"></div>
