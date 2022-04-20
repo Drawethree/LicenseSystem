@@ -3,16 +3,19 @@ package dev.drawethree.LicenseSystem.license.model;
 import dev.drawethree.LicenseSystem.license.exception.LicenseInvalidStatusException;
 import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.user.model.User;
+import dev.drawethree.LicenseSystem.utils.DateUtils;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "license")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
 public class License {
@@ -71,6 +74,21 @@ public class License {
 
     public boolean isPermanent() {
         return duration == 0;
+    }
+
+    public String getExpiresInAsString() {
+
+        if (this.duration == 0) {
+            return "Never";
+        }
+
+        if (isExpired()) {
+            return "Expired";
+        }
+
+        LocalDateTime current = LocalDateTime.now();
+        long millisDiff = ChronoUnit.MILLIS.between(current, expireDate);
+        return DateUtils.formatMillisDDHHMMSS(millisDiff);
     }
 
     public String getLicenseStatus() throws LicenseInvalidStatusException {

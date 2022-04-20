@@ -3,11 +3,15 @@ package dev.drawethree.LicenseSystem.user.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.software.model.Software;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +20,10 @@ import java.util.List;
 @Getter
 @Setter
 public class User {
+
+    public static long MAX_SOFTWARE_PER_CREATOR = 5;
+
+    public static long MAX_LICENSES_PER_SOFTWARE = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,4 +70,32 @@ public class User {
         return roles.contains("CREATOR");
     }
 
+
+    public boolean canCreateSoftware() {
+        if (isAdmin()) {
+            return true;
+        }
+        return isCreator() && this.getSoftwares().size() < MAX_SOFTWARE_PER_CREATOR;
+    }
+
+    public boolean canCreateLicense(Software software) {
+        if (isAdmin()) {
+            return true;
+        }
+
+        return isCreator() && software.getCreator().equals(this) && software.getLicenses().size() < MAX_LICENSES_PER_SOFTWARE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id && username.equals(user.username) && password.equals(user.password) && email.equals(user.email) && createdAt.equals(user.createdAt) && roles.equals(user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, email, createdAt, roles);
+    }
 }

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Table(name = "software")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
 public class Software {

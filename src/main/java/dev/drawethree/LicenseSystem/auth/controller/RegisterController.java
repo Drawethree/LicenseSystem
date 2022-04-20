@@ -59,7 +59,7 @@ public class RegisterController {
 
         securityService.autoLogin(user.getUsername(), rawPw);
 
-        redirectAttributes.addFlashAttribute("registerSuccess", true);
+        redirectAttributes.addFlashAttribute("success", "Successfully registered account and auto-logged in!");
 
         return "redirect:/";
     }

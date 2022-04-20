@@ -1,5 +1,6 @@
 package dev.drawethree.LicenseSystem.software.controller;
 
+import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.software.service.SoftwareService;
@@ -88,8 +89,8 @@ public class SoftwareController {
         return "software/list";
     }
 
-    @GetMapping("/update")
-    public String showUpdateSoftwareForm(@RequestParam("softwareId") int id, Model model) {
+    @GetMapping("/update/{id}")
+    public String showUpdateSoftwareForm(@PathVariable("id") int id, Model model) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
@@ -97,46 +98,69 @@ public class SoftwareController {
 
         Optional<Software> software = softwareService.findById(id);
 
-        if  (software.isEmpty()) {
+        if (software.isEmpty()) {
             return "software/index";
         }
-
 
         model.addAttribute("software", software.get());
 
         return "software/update";
     }
 
-    @PostMapping("/update")
-    public String updateSoftware(@ModelAttribute("software") Software software, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    @PostMapping("/update/{id}")
+    public String updateSoftware(@PathVariable("id") int id, @ModelAttribute("software") Software tempSoftware, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
         }
 
-        softwareValidator.validate(software, bindingResult);
+        softwareValidator.validate(tempSoftware, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "software/update";
         }
 
+        Optional<Software> optionalSoftware = softwareService.findById(id);
+
+        if (optionalSoftware.isEmpty()) {
+            return "software/index";
+        }
+
+        Software software = optionalSoftware.get();
+        software.setName(tempSoftware.getName());
+        software.setDescription(tempSoftware.getDescription());
+        software.setVisible(tempSoftware.isVisible());
+
         softwareService.save(software);
 
-        redirectAttributes.addFlashAttribute("softwareUpdated",true);
+        redirectAttributes.addFlashAttribute("success", "Successfully updated software!");
 
         return "redirect:/software";
     }
 
-    @GetMapping("/delete")
-    public String deleteSoftware(@RequestParam("softwareId") int id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/delete/{id}")
+    public String deleteSoftware(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
 
         if (!securityService.isAuthenticated()) {
             return "redirect:/login";
         }
 
+        User currentUser = securityService.getCurrentUser();
+        Optional<Software> softwareOptional = softwareService.findById(id);
+
+        if (softwareOptional.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Software does not exist.");
+            return "redirect:/software";
+        }
+
+        if (!softwareOptional.get().getCreator().equals(currentUser) && !currentUser.isAdmin()) {
+            redirectAttributes.addFlashAttribute("error", "Not authorized.");
+            return "redirect:/software";
+        }
+
         softwareService.deleteById(id);
 
-        redirectAttributes.addFlashAttribute("softwareDeleted",true);
+        redirectAttributes.addFlashAttribute("success", "Successfully deleted software!");
 
         return "redirect:/software";
     }
@@ -156,13 +180,38 @@ public class SoftwareController {
 
         User user = securityService.getCurrentUser();
 
+        if (!user.canCreateSoftware()) {
+            redirectAttributes.addFlashAttribute("error", "You have reached maximum amount of software for your account!");
+            return "redirect:/software";
+        }
+
         software.setCreator(user);
         software.setCreatedAt(LocalDateTime.now());
 
         softwareService.save(software);
 
-        redirectAttributes.addFlashAttribute("softwareCreated",true);
+        redirectAttributes.addFlashAttribute("success", "Successfully create new software!");
 
         return "redirect:/software";
+    }
+
+    @GetMapping("/licenses/{softwareId}")
+    public String viewSoftwareLicenses(@PathVariable("softwareId") int id, Model model) {
+
+        if (!securityService.isAuthenticated()) {
+            return "redirect:/login";
+        }
+
+        Optional<Software> optionalSoftware = softwareService.findById(id);
+        if (optionalSoftware.isEmpty()) {
+            return "redirect:/software";
+        }
+
+        Software software = optionalSoftware.get();
+
+        model.addAttribute("software", software);
+        model.addAttribute("licenses", software.getLicenses());
+
+        return "software/licenses";
     }
 }

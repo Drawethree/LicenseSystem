@@ -7,6 +7,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.Optional;
+
 @Component
 public class SoftwareValidator implements Validator {
 
@@ -28,7 +30,9 @@ public class SoftwareValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "field.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "field.required");
 
-        if (softwareService.findByName(software.getName()).isPresent()) {
+        Optional<Software> optionalSoftware = softwareService.findByName(software.getName());
+
+        if (optionalSoftware.isPresent() && optionalSoftware.get().getId() != software.getId()) {
             errors.rejectValue("name", "software.name.taken");
         }
     }
