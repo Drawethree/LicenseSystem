@@ -1,11 +1,11 @@
 package dev.drawethree.LicenseSystem.software.controller;
 
-import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.software.service.SoftwareService;
 import dev.drawethree.LicenseSystem.software.validation.SoftwareValidator;
 import dev.drawethree.LicenseSystem.user.model.User;
+import dev.drawethree.LicenseSystem.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -30,10 +30,13 @@ public class SoftwareController {
 
     private final SoftwareValidator softwareValidator;
 
-    public SoftwareController(SoftwareService softwareService, SecurityService securityService, SoftwareValidator softwareValidator) {
+    private final UserService userService;
+
+    public SoftwareController(SoftwareService softwareService, SecurityService securityService, SoftwareValidator softwareValidator, UserService userService) {
         this.softwareService = softwareService;
         this.securityService = securityService;
         this.softwareValidator = softwareValidator;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -67,6 +70,11 @@ public class SoftwareController {
     public String showPublicSoftwares(@RequestParam("page") Optional<Integer> page, Model model) {
 
         int currentPage = page.orElse(1);
+
+        if (currentPage <= 0) {
+            currentPage = 1;
+        }
+
         int pageSize = 5;
 
         Page<Software> softwarePage = softwareService.findPaginated(PageRequest.of(currentPage - 1, pageSize), true);
@@ -180,17 +188,17 @@ public class SoftwareController {
 
         User user = securityService.getCurrentUser();
 
-        if (!user.canCreateSoftware()) {
+        if (!userService.canCreateSoftware(user)) {
             redirectAttributes.addFlashAttribute("error", "You have reached maximum amount of software for your account!");
             return "redirect:/software";
         }
 
-        software.setCreator(user);
         software.setCreatedAt(LocalDateTime.now());
+        user.addSoftware(software);
 
-        softwareService.save(software);
+        userService.save(user);
 
-        redirectAttributes.addFlashAttribute("success", "Successfully create new software!");
+        redirectAttributes.addFlashAttribute("success", "Successfully created new software!");
 
         return "redirect:/software";
     }
@@ -203,6 +211,7 @@ public class SoftwareController {
         }
 
         Optional<Software> optionalSoftware = softwareService.findById(id);
+
         if (optionalSoftware.isEmpty()) {
             return "redirect:/software";
         }

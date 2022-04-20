@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +43,7 @@ public class Software {
     @JsonIgnore
     private List<License> licenses;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "creator_id", nullable = false)
+    @ManyToOne
     @JsonIgnore
     private User creator;
 
@@ -55,5 +55,20 @@ public class Software {
     @JsonIgnore
     public List<License> getActiveLicenses() {
         return licenses.stream().filter(License::isActive).collect(Collectors.toList());
+    }
+
+    public void addLicense(License license) {
+        if (licenses == null) {
+            licenses = new ArrayList<>();
+        }
+        licenses.add(license);
+    }
+
+    public void removeLicense(License license) {
+        if (licenses == null) {
+            licenses = new ArrayList<>();
+        }
+        licenses.remove(license);
+        license.setSoftware(null);
     }
 }

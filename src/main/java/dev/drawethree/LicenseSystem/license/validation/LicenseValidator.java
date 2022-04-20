@@ -29,10 +29,6 @@ public class LicenseValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "software", "field.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "duration", "field.required");
 
-        if (license.getSoftware() == null) {
-            errors.rejectValue("duration", "license.software.required");
-        }
-
         if (license.getDuration() < 0) {
             errors.rejectValue("duration", "license.duration.length");
         }

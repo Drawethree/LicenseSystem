@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class User {
 
     public static long MAX_SOFTWARE_PER_CREATOR = 5;
 
-    public static long MAX_LICENSES_PER_SOFTWARE = 50;
+    public static long MAX_LICENSES_PER_SOFTWARE = 25;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,11 +48,12 @@ public class User {
     private String roles;
 
     @OrderBy("name desc")
-    @OneToMany(mappedBy = "creator", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(mappedBy = "creator", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Software> softwares;
 
     @OrderBy("expireDate desc")
-    @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+            CascadeType.REFRESH})
     @JsonIgnore
     private List<License> licenses;
 
@@ -70,22 +72,6 @@ public class User {
         return roles.contains("CREATOR");
     }
 
-
-    public boolean canCreateSoftware() {
-        if (isAdmin()) {
-            return true;
-        }
-        return isCreator() && this.getSoftwares().size() < MAX_SOFTWARE_PER_CREATOR;
-    }
-
-    public boolean canCreateLicense(Software software) {
-        if (isAdmin()) {
-            return true;
-        }
-
-        return isCreator() && software.getCreator().equals(this) && software.getLicenses().size() < MAX_LICENSES_PER_SOFTWARE;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,5 +83,37 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, email, createdAt, roles);
+    }
+
+    public void addLicense(License license) {
+        if (licenses == null) {
+            licenses = new ArrayList<>();
+        }
+        licenses.add(license);
+        license.setLicenseUser(this);
+    }
+
+    public void removeLicense(License license) {
+        if (licenses == null) {
+            licenses = new ArrayList<>();
+        }
+        licenses.remove(license);
+        license.setLicenseUser(null);
+    }
+
+    public void addSoftware(Software software) {
+        if (softwares == null) {
+            softwares = new ArrayList<>();
+        }
+        softwares.add(software);
+        software.setCreator(this);
+    }
+
+    public void removeSoftware(Software software) {
+        if (softwares == null) {
+            softwares = new ArrayList<>();
+        }
+        softwares.remove(software);
+        software.setCreator(null);
     }
 }

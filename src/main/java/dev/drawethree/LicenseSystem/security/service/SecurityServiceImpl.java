@@ -1,7 +1,7 @@
 package dev.drawethree.LicenseSystem.security.service;
 
-import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.auth.user.UserDetailsImpl;
+import dev.drawethree.LicenseSystem.user.model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;

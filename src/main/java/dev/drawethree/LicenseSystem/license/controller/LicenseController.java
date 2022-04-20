@@ -4,7 +4,10 @@ import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.license.service.LicenseService;
 import dev.drawethree.LicenseSystem.license.validation.LicenseValidator;
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
+import dev.drawethree.LicenseSystem.software.model.Software;
+import dev.drawethree.LicenseSystem.software.service.SoftwareService;
 import dev.drawethree.LicenseSystem.user.model.User;
+import dev.drawethree.LicenseSystem.user.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +29,13 @@ public class LicenseController {
 
     private final LicenseValidator licenseValidator;
 
-    public LicenseController(LicenseService licenseService, SecurityService securityService, LicenseValidator licenseValidator) {
+    private final UserService userService;
+
+    public LicenseController(LicenseService licenseService, SecurityService securityService, LicenseValidator licenseValidator, SoftwareService softwareService, UserService userService) {
         this.licenseService = licenseService;
         this.securityService = securityService;
         this.licenseValidator = licenseValidator;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -76,15 +82,15 @@ public class LicenseController {
 
         licenseValidator.validate(license, bindingResult);
 
-        User user = securityService.getCurrentUser();
-
-        if (!user.canCreateLicense(license.getSoftware())) {
-            redirectAttributes.addFlashAttribute("error", "You have reached maximum amount of licenses for this software!");
-            return "redirect:/software";
-        }
-
         if (bindingResult.hasErrors()) {
             return "license/create";
+        }
+
+        User user = securityService.getCurrentUser();
+
+        if (!userService.canCreateLicense(user,license.getSoftware())) {
+            redirectAttributes.addFlashAttribute("error", "You have reached maximum amount of licenses for this software!");
+            return "redirect:/software";
         }
 
         license.setCreatedAt(LocalDateTime.now());
@@ -121,7 +127,7 @@ public class LicenseController {
 
         redirectAttributes.addFlashAttribute("success", "Successfully deleted license!");
 
-        return "redirect:/license";
+        return "redirect:/software";
     }
 
     @GetMapping("/activate")

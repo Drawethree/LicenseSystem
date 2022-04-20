@@ -32,10 +32,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/images/**", "/scripts/**", "/fonts/**").permitAll()
+                .antMatchers("/css/**", "/images/**", "/scripts/**", "/fonts/**", "/static/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/", "/register").permitAll()
                 .antMatchers("/user").hasAnyAuthority("CREATOR", "CUSTOMER", "ADMIN")
-                .antMatchers("/software").hasAnyAuthority("CREATOR", "CUSTOMER", "ADMIN")
+                .antMatchers("/software").hasAnyAuthority("CREATOR", "ADMIN")
                 .antMatchers("/license").hasAnyAuthority("CREATOR", "CUSTOMER", "ADMIN")
                 .antMatchers("/api").authenticated()
                 .and()
@@ -57,4 +58,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
 }

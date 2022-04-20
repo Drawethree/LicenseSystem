@@ -5,8 +5,8 @@ import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -65,12 +65,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean canCreateSoftware(User user) {
-        return user.getSoftwares().size() < 5;
+        if (user.isAdmin()) {
+            return true;
+        }
+        return user.isCreator() && user.getSoftwares().size() < User.MAX_SOFTWARE_PER_CREATOR;
     }
 
     @Override
+    @Transactional
     public boolean canCreateLicense(User user, Software software) {
-        return software.getLicenses().size() < 25;
+        if (user.isAdmin()) {
+            return true;
+        }
+
+        return user.isCreator() && software.getCreator().equals(user) && software.getLicenses().size() < User.MAX_LICENSES_PER_SOFTWARE;
     }
 }

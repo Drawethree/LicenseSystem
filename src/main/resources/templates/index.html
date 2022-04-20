@@ -8,30 +8,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" type="image/png" href="images/favicon.ico" />
 
     <title>License System</title>
 </head>
 <body>
 
-
-
-<!-- ALERTS
-<div th:if="${logout}" class="alert alert-info alert-dismissible fade show" role="alert">
-    You were logged out.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-<div th:if="${login}" class="alert alert-success alert-dismissible fade show" role="alert">
-    Successfully logged in
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
--->
 
 <div th:replace="fragments/header :: header"></div>
 
@@ -72,9 +56,9 @@
                 <p class="card-text">License system is a web application where you can create and manage licenses for
                     customers using your
                     software.
-                    Your customers need to register an account on our site to redeem their
-                    licenses.
                 </p>
+                <p class="card-text">Your customers need to register an account on our site to redeem their
+                    licenses.</p>
                 <a th:href="@{/register}" href="#" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>&nbsp;Register
                     an account</a>
             </div>
@@ -87,6 +71,7 @@
                     software in our user panel.
                     In user panel you can create licenses for your software and give
                     the license keys to your customers to redeem.</p>
+                <p class="card-text">By default you can create up to 5 software and each software has a limit of 25 licences.</p>
                 <a th:href="@{/user}" href="#" class="btn btn-primary"><i class="fa-solid fa-user"></i>&nbsp;Creator
                     Panel</a>
             </div>
@@ -96,7 +81,8 @@
             <div class="card-body">
                 <h2 class="card-title">Using as Customer</h2>
                 <p class="card-text">Have you purchased a license from one of our creators? Lets redeem your
-                    license! You can also view all of your licenses in our customer panel.</p>
+                    license!</p>
+                <p class="card-text">You can also view all of your licenses in our customer panel.</p>
                 <a th:href="@{/user}" href="#" class="btn btn-primary"><i class="fa-solid fa-user"></i>&nbsp;Customer
                     Panel
                 </a>

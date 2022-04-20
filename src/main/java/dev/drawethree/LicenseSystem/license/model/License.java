@@ -25,8 +25,8 @@ public class License {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "software_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "software_id")
     private Software software;
 
     @Column(name = "license_key", nullable = false, unique = true)
@@ -35,8 +35,8 @@ public class License {
     @Column(name = "duration", nullable = false)
     private int duration;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "customer_id")
+    @ManyToOne
+    @JoinColumn(name = "license_user_id")
     private User licenseUser;
 
     @Column(name = "created_at", nullable = false)
