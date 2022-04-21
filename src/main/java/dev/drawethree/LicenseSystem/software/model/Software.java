@@ -39,22 +39,14 @@ public class Software {
 
     @OrderBy("id desc")
     @OneToMany(mappedBy = "software", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    @JsonIgnore
     private List<License> licenses;
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private User creator;
-
-    public Software(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     @JsonIgnore
     public List<License> getActiveLicenses() {
-        return licenses.stream().filter(License::isActive).collect(Collectors.toList());
+        return this.licenses.stream().filter(License::isActive).collect(Collectors.toList());
     }
 
     public void addLicense(License license) {
@@ -62,6 +54,7 @@ public class Software {
             licenses = new ArrayList<>();
         }
         licenses.add(license);
+        license.setSoftware(this);
     }
 
     public void removeLicense(License license) {

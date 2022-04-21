@@ -25,13 +25,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    public void saveAndEncryptPassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        save(user);
     }
 
     @Override
     public void deleteById(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 
     @Override
@@ -67,9 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean canCreateSoftware(User user) {
+
         if (user.isAdmin()) {
             return true;
         }
+
         return user.isCreator() && user.getSoftwares().size() < User.MAX_SOFTWARE_PER_CREATOR;
     }
 

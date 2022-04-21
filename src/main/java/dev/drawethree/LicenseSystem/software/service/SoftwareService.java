@@ -16,7 +16,7 @@ public interface SoftwareService {
 
     Page<Software> findPaginated(Pageable pageable, boolean onlyVisible);
 
-    List<Software> findAllByVisible(boolean visible);
+    List<Software> findAllByVisible(boolean visibility);
 
     List<Software> findAllByCreator(User user);
 

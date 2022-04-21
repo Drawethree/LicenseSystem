@@ -10,7 +10,11 @@ public interface UserService {
 
     void save(User user);
 
+    void saveAndEncryptPassword(User user);
+
     void deleteById(int id);
+
+    void delete(User user);
 
     Optional<User> findByUsername(String username);
 

@@ -26,21 +26,24 @@ public class UserValidator implements Validator {
         User user = (User) object;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "field.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required");
 
-        /*if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
+
+        // Username length check
+        if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
             errors.rejectValue("username", "username.size");
-        }*/
+        }
 
+        // Duplicite user check
         if (userService.findByUsername(user.getUsername()).isPresent()) {
             errors.rejectValue("username", "user.username.taken");
         }
 
+        // Duplicite email check
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             errors.rejectValue("email", "user.email.taken");
         }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required");
-
+        // pw length check
         /*if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "password.size");
         }*/

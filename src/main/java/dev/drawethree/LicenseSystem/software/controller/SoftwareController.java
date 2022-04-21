@@ -104,13 +104,21 @@ public class SoftwareController {
             return "redirect:/login";
         }
 
-        Optional<Software> software = softwareService.findById(id);
+        User user = securityService.getCurrentUser();
 
-        if (software.isEmpty()) {
+        Optional<Software> softwareOptional = softwareService.findById(id);
+
+        if (softwareOptional.isEmpty()) {
             return "software/index";
         }
 
-        model.addAttribute("software", software.get());
+        Software software = softwareOptional.get();
+
+        if (software.getCreator().equals(user) && !user.isAdmin()) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("software", software);
 
         return "software/update";
     }
@@ -135,6 +143,7 @@ public class SoftwareController {
         }
 
         Software software = optionalSoftware.get();
+
         software.setName(tempSoftware.getName());
         software.setDescription(tempSoftware.getDescription());
         software.setVisible(tempSoftware.isVisible());
@@ -161,12 +170,13 @@ public class SoftwareController {
             return "redirect:/software";
         }
 
-        if (!softwareOptional.get().getCreator().equals(currentUser) && !currentUser.isAdmin()) {
-            redirectAttributes.addFlashAttribute("error", "Not authorized.");
-            return "redirect:/software";
+        Software software = softwareOptional.get();
+
+        if (!software.getCreator().equals(currentUser) && !currentUser.isAdmin()) {
+            return "redirect:/";
         }
 
-        softwareService.deleteById(id);
+        softwareService.delete(software);
 
         redirectAttributes.addFlashAttribute("success", "Successfully deleted software!");
 
@@ -194,9 +204,10 @@ public class SoftwareController {
         }
 
         software.setCreatedAt(LocalDateTime.now());
-        user.addSoftware(software);
+        software.setCreator(user);
 
-        userService.save(user);
+
+        softwareService.save(software);
 
         redirectAttributes.addFlashAttribute("success", "Successfully created new software!");
 

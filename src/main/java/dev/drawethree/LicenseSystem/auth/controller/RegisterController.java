@@ -55,7 +55,7 @@ public class RegisterController {
 
         String rawPw = user.getPassword();
 
-        userService.save(user);
+        userService.saveAndEncryptPassword(user);
 
         securityService.autoLogin(user.getUsername(), rawPw);
 

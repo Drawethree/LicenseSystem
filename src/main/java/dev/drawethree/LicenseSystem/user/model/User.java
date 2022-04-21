@@ -1,6 +1,5 @@
 package dev.drawethree.LicenseSystem.user.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.software.model.Software;
 import lombok.AllArgsConstructor;
@@ -34,10 +33,8 @@ public class User {
     private String username;
 
     @Column(name = "password", nullable = false)
-    @JsonIgnore
     private String password;
 
-    @JsonIgnore
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
@@ -48,26 +45,21 @@ public class User {
     private String roles;
 
     @OrderBy("name desc")
-    @OneToMany(mappedBy = "creator", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
     private List<Software> softwares;
 
     @OrderBy("expireDate desc")
-    @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
-            CascadeType.REFRESH})
-    @JsonIgnore
+    @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<License> licenses;
 
-    @JsonIgnore
     public boolean isCustomer() {
         return roles.contains("CUSTOMER");
     }
 
-    @JsonIgnore
     public boolean isAdmin() {
         return roles.contains("ADMIN");
     }
 
-    @JsonIgnore
     public boolean isCreator() {
         return roles.contains("CREATOR");
     }
@@ -102,9 +94,11 @@ public class User {
     }
 
     public void addSoftware(Software software) {
+
         if (softwares == null) {
             softwares = new ArrayList<>();
         }
+
         softwares.add(software);
         software.setCreator(this);
     }

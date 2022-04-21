@@ -32,6 +32,7 @@ public class SoftwareValidator implements Validator {
 
         Optional<Software> optionalSoftware = softwareService.findByName(software.getName());
 
+        // Update check
         if (optionalSoftware.isPresent() && optionalSoftware.get().getId() != software.getId()) {
             errors.rejectValue("name", "software.name.taken");
         }

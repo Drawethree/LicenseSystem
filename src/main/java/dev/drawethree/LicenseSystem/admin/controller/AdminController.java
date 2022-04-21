@@ -116,8 +116,6 @@ public class AdminController {
 	@PostMapping("/users/changePassword")
 	public String changeUserPassword(@ModelAttribute("user") User userView, BindingResult bindingResult, @RequestParam int userId) {
 
-		//userService.validate(user, bindingResult);
-
 		if (bindingResult.hasErrors()) {
 			return "admin/change_password";
 		}
@@ -132,7 +130,8 @@ public class AdminController {
 
 		user.setPassword(userView.getPassword());
 
-		userService.save(user);
+		userService.saveAndEncryptPassword(user);
+
 		return "redirect:/admin/users";
 	}
 }

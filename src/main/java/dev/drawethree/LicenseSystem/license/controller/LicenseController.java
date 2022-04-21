@@ -165,12 +165,13 @@ public class LicenseController {
             return "license/activate";
         }
 
-        license.setLicenseUser(user);
         license.setActivationDate(LocalDateTime.now());
 
         if (license.getDuration() > 0) {
             license.setExpireDate(LocalDateTime.now().plusDays(license.getDuration()));
         }
+
+        user.addLicense(license);
 
         licenseService.save(license);
 

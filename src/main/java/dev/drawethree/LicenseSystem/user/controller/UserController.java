@@ -1,6 +1,7 @@
 package dev.drawethree.LicenseSystem.user.controller;
 
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
+import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,9 @@ public class UserController {
             return "redirect:/login";
         }
 
-        model.addAttribute("user", securityService.getCurrentUser());
+        User user = securityService.getCurrentUser();
+
+        model.addAttribute("user", user);
 
         return "user/index";
     }
