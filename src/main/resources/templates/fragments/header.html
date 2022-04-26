@@ -44,21 +44,21 @@
                 </li>
             </div>
 
-            <div sec:authorize="hasAuthority('CREATOR')">
+            <div sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
                 <li class="nav-item nav-link">
                     <a href="#" th:href="@{/software/create}" class="nav-link"><i
                             class="fa-solid fa-circle-plus"></i>&nbsp;Create New Software</a>
                 </li>
             </div>
 
-            <div sec:authorize="hasAuthority('CREATOR')">
+            <div sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
                 <li class="nav-item nav-link">
                     <a href="#" th:href="@{/license/create}" class="nav-link"><i
                             class="fa-solid fa-circle-plus"></i>&nbsp;Create New License</a>
                 </li>
             </div>
 
-            <div sec:authorize="hasAuthority('CUSTOMER')">
+            <div sec:authorize="hasAnyAuthority('CUSTOMER', 'ADMIN')">
                 <li class="nav-item nav-link">
                     <a href="#" th:href="@{/license/activate}" class="nav-link"><i
                             class="fa-solid fa-key"></i>&nbsp;Activate License</a>

@@ -28,11 +28,16 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "field.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required");
 
-
         // Username length check
         if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "username.size");
+            errors.rejectValue("username", "user.username.size");
         }
+
+        // pw length check
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+            errors.rejectValue("password", "user.password.size");
+        }
+
 
         // Duplicite user check
         if (userService.findByUsername(user.getUsername()).isPresent()) {
@@ -43,10 +48,8 @@ public class UserValidator implements Validator {
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             errors.rejectValue("email", "user.email.taken");
         }
-        // pw length check
-        /*if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "password.size");
-        }*/
+
+
 
     }
 }

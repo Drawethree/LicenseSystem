@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,27 +40,34 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "roles")
-    private String roles;
+    @Column(name = "role")
+    private String role;
 
-    @OrderBy("name desc")
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator", cascade = CascadeType.ALL)
     private List<Software> softwares;
 
-    @OrderBy("expireDate desc")
-    @OneToMany(mappedBy = "licenseUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "licenseUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST})
     private List<License> licenses;
 
+    @PreRemove
+    private void preRemove() {
+        for (License license : licenses) {
+            license.setLicenseUser(null);
+        }
+    }
+
     public boolean isCustomer() {
-        return roles.contains("CUSTOMER");
+        return "CUSTOMER".equalsIgnoreCase(role);
     }
 
     public boolean isAdmin() {
-        return roles.contains("ADMIN");
+        return "ADMIN".equalsIgnoreCase(role);
     }
 
     public boolean isCreator() {
-        return roles.contains("CREATOR");
+        return "CREATOR".equalsIgnoreCase(role);
     }
 
     @Override
@@ -69,45 +75,11 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return id == user.id && username.equals(user.username) && password.equals(user.password) && email.equals(user.email) && createdAt.equals(user.createdAt) && roles.equals(user.roles);
+        return id == user.id && username.equals(user.username) && password.equals(user.password) && email.equals(user.email) && createdAt.equals(user.createdAt) && role.equals(user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, createdAt, roles);
-    }
-
-    public void addLicense(License license) {
-        if (licenses == null) {
-            licenses = new ArrayList<>();
-        }
-        licenses.add(license);
-        license.setLicenseUser(this);
-    }
-
-    public void removeLicense(License license) {
-        if (licenses == null) {
-            licenses = new ArrayList<>();
-        }
-        licenses.remove(license);
-        license.setLicenseUser(null);
-    }
-
-    public void addSoftware(Software software) {
-
-        if (softwares == null) {
-            softwares = new ArrayList<>();
-        }
-
-        softwares.add(software);
-        software.setCreator(this);
-    }
-
-    public void removeSoftware(Software software) {
-        if (softwares == null) {
-            softwares = new ArrayList<>();
-        }
-        softwares.remove(software);
-        software.setCreator(null);
+        return Objects.hash(id, username, password, email, createdAt, role);
     }
 }

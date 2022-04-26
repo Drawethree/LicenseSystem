@@ -81,8 +81,13 @@ public class SoftwareServiceImpl implements SoftwareService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteSoftwareById(int id) {
        this.softwareRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateSoftware(Software software) {
+        this.softwareRepository.save(software);
     }
 
     @Override

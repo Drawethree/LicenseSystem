@@ -25,25 +25,25 @@ public class LicenseController {
 
     private final LicenseService licenseService;
 
+    private final SoftwareService softwareService;
+
     private final SecurityService securityService;
 
     private final LicenseValidator licenseValidator;
 
     private final UserService userService;
 
-    public LicenseController(LicenseService licenseService, SecurityService securityService, LicenseValidator licenseValidator, SoftwareService softwareService, UserService userService) {
+    public LicenseController(LicenseService licenseService, SoftwareService softwareService, SecurityService securityService, LicenseValidator licenseValidator, UserService userService) {
         this.licenseService = licenseService;
+        this.softwareService = softwareService;
         this.securityService = securityService;
         this.licenseValidator = licenseValidator;
         this.userService = userService;
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'ADMIN')")
     public String showIndex(Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         User user = securityService.getCurrentUser();
 
@@ -55,30 +55,36 @@ public class LicenseController {
     }
 
     @GetMapping("/create")
-    @PreAuthorize("hasAnyAuthority('CREATOR','ADMIN')")
-    public String showCreateLicenseForm(Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
+    public String showCreateLicenseForm(Model model, RedirectAttributes redirectAttributes) {
 
         User user = securityService.getCurrentUser();
 
         License license = new License();
         license.setLicenseKey(licenseService.generateLicenseKey());
 
+        List<Software> softwareList;
+
+        if (user.isAdmin()) {
+            softwareList = softwareService.findAll();
+        } else {
+            softwareList = softwareService.findAllByCreator(user);
+        }
+
+        if (softwareList.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "You do not have any software.");
+            return "redirect:/software";
+        }
+
         model.addAttribute("license", license);
-        model.addAttribute("softwares", user.getSoftwares());
+        model.addAttribute("softwares", softwareList);
+
         return "license/create";
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasAnyAuthority('CREATOR','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
     public String createLicense(@ModelAttribute("license") License license, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         licenseValidator.validate(license, bindingResult);
 
@@ -88,7 +94,7 @@ public class LicenseController {
 
         User user = securityService.getCurrentUser();
 
-        if (!userService.canCreateLicense(user,license.getSoftware())) {
+        if (!userService.canCreateLicense(user, license.getSoftware())) {
             redirectAttributes.addFlashAttribute("error", "You have reached maximum amount of licenses for this software!");
             return "redirect:/software";
         }
@@ -97,45 +103,40 @@ public class LicenseController {
 
         licenseService.save(license);
 
-        redirectAttributes.addFlashAttribute("success", "Successfully created new license!");
+        redirectAttributes.addFlashAttribute("success", "Successfully created new license for " + license.getSoftware().getName() + ".");
 
         return "redirect:/software";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteLicense(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    @GetMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'ADMIN')")
+    public String deleteLicense(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
 
         User currentUser = securityService.getCurrentUser();
 
         Optional<License> licenseOptional = licenseService.findById(id);
 
         if (licenseOptional.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "License does not exist.");
+            redirectAttributes.addFlashAttribute("error", "License not found.");
             return "redirect:/license";
         }
 
-        if (!licenseOptional.get().getSoftware().getCreator().equals(currentUser) && !currentUser.isAdmin()) {
-            redirectAttributes.addFlashAttribute("error", "Not authorized.");
-            return "redirect:/license";
+        License license = licenseOptional.get();
+
+        if (!license.getSoftware().getCreator().equals(currentUser) && !currentUser.isAdmin()) {
+            return "redirect:/error/error-403";
         }
 
         licenseService.deleteById(id);
 
-        redirectAttributes.addFlashAttribute("success", "Successfully deleted license!");
+        redirectAttributes.addFlashAttribute("success", "Successfully deleted license.");
 
         return "redirect:/software";
     }
 
     @GetMapping("/activate")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'ADMIN')")
     public String showActivationForm(Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         model.addAttribute("license", new License());
 
@@ -143,11 +144,8 @@ public class LicenseController {
     }
 
     @PostMapping("/activate")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'ADMIN')")
     public String activateLicense(@ModelAttribute("license") License tempLicense, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         User user = securityService.getCurrentUser();
 
@@ -165,17 +163,11 @@ public class LicenseController {
             return "license/activate";
         }
 
-        license.setActivationDate(LocalDateTime.now());
-
-        if (license.getDuration() > 0) {
-            license.setExpireDate(LocalDateTime.now().plusDays(license.getDuration()));
-        }
-
-        user.addLicense(license);
+        license.activate(user);
 
         licenseService.save(license);
 
-        redirectAttributes.addFlashAttribute("success","Successfully activate license!");
+        redirectAttributes.addFlashAttribute("success", "Successfully activate license for " + license.getSoftware().getName() + ".");
 
         return "redirect:/license";
     }

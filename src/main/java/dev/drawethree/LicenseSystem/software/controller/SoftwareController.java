@@ -8,6 +8,7 @@ import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,15 +41,12 @@ public class SoftwareController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
     public String showIndex(Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         User user = securityService.getCurrentUser();
 
-        List<Software> softwareList = this.softwareService.findAllByCreator(user);
+        List<Software> softwareList = softwareService.findAllByCreator(user);
 
         model.addAttribute("softwares", softwareList);
 
@@ -56,18 +54,15 @@ public class SoftwareController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
     public String showCreateNewSoftwareForm(Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         model.addAttribute("software", new Software());
         return "software/create";
     }
 
     @GetMapping("/list")
-    public String showPublicSoftwares(@RequestParam("page") Optional<Integer> page, Model model) {
+    public String showPublicSoftware(@RequestParam("page") Optional<Integer> page, Model model) {
 
         int currentPage = page.orElse(1);
 
@@ -97,12 +92,9 @@ public class SoftwareController {
         return "software/list";
     }
 
-    @GetMapping("/update/{id}")
-    public String showUpdateSoftwareForm(@PathVariable("id") int id, Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    @GetMapping("/update")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
+    public String showUpdateSoftwareForm(@RequestParam("id") int id, Model model) {
 
         User user = securityService.getCurrentUser();
 
@@ -114,8 +106,8 @@ public class SoftwareController {
 
         Software software = softwareOptional.get();
 
-        if (software.getCreator().equals(user) && !user.isAdmin()) {
-            return "redirect:/";
+        if (!software.getCreator().equals(user) && !user.isAdmin()) {
+            return "redirect:/error/error-403";
         }
 
         model.addAttribute("software", software);
@@ -123,12 +115,12 @@ public class SoftwareController {
         return "software/update";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateSoftware(@PathVariable("id") int id, @ModelAttribute("software") Software tempSoftware, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
+    public String updateSoftware(@ModelAttribute("software") Software tempSoftware, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+
+        User user = securityService.getCurrentUser();
 
         softwareValidator.validate(tempSoftware, bindingResult);
 
@@ -136,7 +128,7 @@ public class SoftwareController {
             return "software/update";
         }
 
-        Optional<Software> optionalSoftware = softwareService.findById(id);
+        Optional<Software> optionalSoftware = softwareService.findById(tempSoftware.getId());
 
         if (optionalSoftware.isEmpty()) {
             return "software/index";
@@ -144,25 +136,27 @@ public class SoftwareController {
 
         Software software = optionalSoftware.get();
 
+        if (!software.getCreator().equals(user) && !user.isAdmin()) {
+            return "redirect:/error/error-403";
+        }
+
         software.setName(tempSoftware.getName());
         software.setDescription(tempSoftware.getDescription());
         software.setVisible(tempSoftware.isVisible());
 
-        softwareService.save(software);
+        softwareService.updateSoftware(software);
 
-        redirectAttributes.addFlashAttribute("success", "Successfully updated software!");
+        redirectAttributes.addFlashAttribute("success", "Successfully updated software "  + software.getName() + ".");
 
         return "redirect:/software";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteSoftware(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    @GetMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
+    public String deleteSoftware(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
 
         User currentUser = securityService.getCurrentUser();
+
         Optional<Software> softwareOptional = softwareService.findById(id);
 
         if (softwareOptional.isEmpty()) {
@@ -173,22 +167,19 @@ public class SoftwareController {
         Software software = softwareOptional.get();
 
         if (!software.getCreator().equals(currentUser) && !currentUser.isAdmin()) {
-            return "redirect:/";
+            return "redirect:/error/error-403";
         }
 
-        softwareService.delete(software);
+        softwareService.deleteSoftwareById(id);
 
-        redirectAttributes.addFlashAttribute("success", "Successfully deleted software!");
+        redirectAttributes.addFlashAttribute("success", "Successfully deleted software " + software.getName() + ".");
 
         return "redirect:/software";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
     public String createSoftware(@ModelAttribute("software") Software software, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         softwareValidator.validate(software, bindingResult);
 
@@ -206,20 +197,16 @@ public class SoftwareController {
         software.setCreatedAt(LocalDateTime.now());
         software.setCreator(user);
 
-
         softwareService.save(software);
 
-        redirectAttributes.addFlashAttribute("success", "Successfully created new software!");
+        redirectAttributes.addFlashAttribute("success", "Successfully created software " + software.getName() + ".");
 
         return "redirect:/software";
     }
 
-    @GetMapping("/licenses/{softwareId}")
-    public String viewSoftwareLicenses(@PathVariable("softwareId") int id, Model model) {
-
-        if (!securityService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    @GetMapping("/licenses")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
+    public String viewSoftwareLicenses(@RequestParam("softwareId") int id, Model model) {
 
         Optional<Software> optionalSoftware = softwareService.findById(id);
 

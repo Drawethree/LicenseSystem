@@ -26,7 +26,9 @@ public interface SoftwareService {
 
     void delete(Software software);
 
-    void deleteById(int id);
+    void deleteSoftwareById(int id);
+
+    void updateSoftware(Software software);
 
     long getSoftwareCount();
 }

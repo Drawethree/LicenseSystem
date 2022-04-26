@@ -65,11 +65,9 @@
                     <td th:text="${license.isPermanent() ? '∞' : license.duration} + ' Days'"></td>
                     <td th:text="${#temporals.format(license.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${license.activationDate == null ? license.getLicenseStatus() : #temporals.format(license.activationDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:text="${license.getExpiresInAsString()}"></td>
+                    <td th:text="${license.expireDate == null ? 'Never' : license.getExpiresInAsString()}"></td>
                     <td>
-                        <a th:href="@{/license/update/{id}(id=${license.getId()})}"
-                           class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Update</a>
-                        <a th:href="@{/license/delete/{id}(id=${license.getId()})}" class="btn btn-danger btn-sm"
+                        <a th:href="@{/license/delete/(id=${license.getId()})}" class="btn btn-danger btn-sm"
                            onclick="if (!(confirm('Are you sure you want to delete this license?'))) return false "><i
                                 class="fa-solid fa-delete-left"></i></i> Delete</a>
                     </td>

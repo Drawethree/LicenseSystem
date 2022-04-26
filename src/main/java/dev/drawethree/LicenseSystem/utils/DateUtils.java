@@ -2,13 +2,12 @@ package dev.drawethree.LicenseSystem.utils;
 
 import java.util.StringJoiner;
 
-
 public class DateUtils {
 
 	public static String formatMillisDDHHMMSS(long millis) {
 		final StringJoiner joiner = new StringJoiner(" ");
 
-		long seconds = millis / 10000;
+		long seconds = millis / 1000;
 
 		long minutes = seconds / 60;
 		long hours = minutes / 60;
@@ -38,6 +37,6 @@ public class DateUtils {
 	}
 
 	private DateUtils() {
-		throw new UnsupportedOperationException("Cannot instantiate");
+		throw new UnsupportedOperationException("Cannot instantiate.");
 	}
 }

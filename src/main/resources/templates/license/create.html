@@ -38,7 +38,7 @@
                         <select class="form-control" id="software" th:field="*{software}" name="software">
                             <option th:each="software : ${softwares}"
                                     th:text="${software.name}"
-                                    th:value="${software}"></option>
+                                    th:value="${software.id}"></option>
                         </select>
                     </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('software')}"

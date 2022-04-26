@@ -1,6 +1,8 @@
 package dev.drawethree.LicenseSystem.software.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.user.model.User;
 import lombok.*;
@@ -25,7 +27,7 @@ public class Software {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", nullable = false)
@@ -38,10 +40,12 @@ public class Software {
     private boolean visible;
 
     @OrderBy("id desc")
-    @OneToMany(mappedBy = "software", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "software", cascade = CascadeType.ALL)
     private List<License> licenses;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "creator_id")
+    @JsonBackReference
     private User creator;
 
     @JsonIgnore
@@ -49,19 +53,28 @@ public class Software {
         return this.licenses.stream().filter(License::isActive).collect(Collectors.toList());
     }
 
-    public void addLicense(License license) {
-        if (licenses == null) {
-            licenses = new ArrayList<>();
+    /*public void addLicense(License license) {
+
+        if (this.licenses == null) {
+            this.licenses = new ArrayList<>();
         }
-        licenses.add(license);
+
         license.setSoftware(this);
+        licenses.add(license);
     }
 
     public void removeLicense(License license) {
-        if (licenses == null) {
-            licenses = new ArrayList<>();
+
+        if (this.licenses == null) {
+            this.licenses = new ArrayList<>();
         }
-        licenses.remove(license);
+
+        if (!this.licenses.contains(license)) {
+            return;
+        }
+
         license.setSoftware(null);
-    }
+        licenses.remove(license);
+    }*/
+
 }

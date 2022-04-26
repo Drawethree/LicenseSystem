@@ -28,6 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return new UserDetailsImpl(optionalUser.get());
+        User user = optionalUser.get();
+
+        return new UserDetailsImpl(user);
     }
 }

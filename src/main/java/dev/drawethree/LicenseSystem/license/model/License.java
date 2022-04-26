@@ -1,6 +1,6 @@
 package dev.drawethree.LicenseSystem.license.model;
 
-import dev.drawethree.LicenseSystem.license.exception.LicenseInvalidStatusException;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.user.model.User;
 import dev.drawethree.LicenseSystem.utils.DateUtils;
@@ -25,8 +25,9 @@ public class License {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "software_id")
+    @JsonBackReference
     private Software software;
 
     @Column(name = "license_key", nullable = false, unique = true)
@@ -35,8 +36,9 @@ public class License {
     @Column(name = "duration", nullable = false)
     private int duration;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "license_user_id")
+    @JsonBackReference
     private User licenseUser;
 
     @Column(name = "created_at", nullable = false)
@@ -91,7 +93,7 @@ public class License {
         return DateUtils.formatMillisDDHHMMSS(millisDiff);
     }
 
-    public String getLicenseStatus() throws LicenseInvalidStatusException {
+    public String getLicenseStatus() {
         if (isActive()) {
             return "Active";
         } else if (isExpired()) {
@@ -99,6 +101,16 @@ public class License {
         } else if (isWaitingForActivation()) {
             return "Waiting For Activation";
         }
-        throw new LicenseInvalidStatusException("Could not get license status for license with id " + id);
+        return "Unknown";
+    }
+
+    public void activate(User user) {
+        this.setActivationDate(LocalDateTime.now());
+
+        if (this.getDuration() > 0) {
+            this.setExpireDate(LocalDateTime.now().plusDays(this.getDuration()));
+        }
+
+        this.setLicenseUser(user);
     }
 }

@@ -13,7 +13,7 @@
 
     <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
 
-    <title>Register</title>
+    <title>Create new User</title>
 </head>
 <body>
 <!-- Registration failed
@@ -31,9 +31,9 @@
     <div class="container px-4 py-5 my-5">
         <div class="col-md-4 mx-auto">
             <!-- REGISTER FORM -->
-            <form th:action="@{/register}" th:object="${user}" method="POST">
+            <form th:action="@{/admin/users/create}" th:object="${user}" method="POST">
 
-                <h1 class="h3 mb-3 text-center">Register your account</h1>
+                <h1 class="h3 mb-3 text-center">Create new User</h1>
 
                 <!-- EMAIL INPUT -->
                 <div class="form-group">
@@ -43,7 +43,7 @@
                             <div class="input-group-text"><i class="fa-solid fa-envelope"></i></div>
                         </div>
 
-                        <input th:field="*{email}" type="email" class="form-control" id="email" placeholder="Your Email"
+                        <input th:field="*{email}" type="email" class="form-control" id="email" placeholder="Email"
                                autofocus required>
                     </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('email')}"
@@ -58,7 +58,7 @@
                         </div>
 
                         <input th:field="*{username}" type="text" class="form-control" id="username"
-                               placeholder="Your Username" required>
+                               placeholder="Username" required>
                     </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('username')}"
                           th:errors="*{username}"></span>
@@ -72,7 +72,7 @@
                         </div>
 
                         <input th:field="*{password}" type="password" class="form-control" id="password"
-                               placeholder="Your Password" required>
+                               placeholder="Password" required>
                     </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('password')}"
                           th:errors="*{password}"></span>
