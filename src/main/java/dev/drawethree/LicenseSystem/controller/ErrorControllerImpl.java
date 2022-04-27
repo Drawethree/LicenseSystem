@@ -19,8 +19,8 @@ public class ErrorControllerImpl implements org.springframework.boot.web.servlet
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error/error-404";
-            } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
-                return "error/error-403";
+            } else if (statusCode == HttpStatus.UNAUTHORIZED.value()) {
+                return "error/error-401";
             }
         }
         return "error/error";

@@ -55,6 +55,8 @@ public class User {
     private void preRemove() {
         for (License license : licenses) {
             license.setLicenseUser(null);
+            license.setExpireDate(null);
+            license.setActivationDate(null);
         }
     }
 

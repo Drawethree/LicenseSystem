@@ -51,10 +51,27 @@
                         </div>
 
                         <textarea id="description" th:field="*{description}" class="form-control"
-                               placeholder="What is this software about?" required></textarea>
+                                  placeholder="What is this software about?" required></textarea>
                     </div>
                     <span class="has-error text-danger" th:if="${#fields.hasErrors('description')}"
                           th:errors="*{description}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Software Price (EUR)</label>
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa-solid fa-money-bill"></i></div>
+                        </div>
+
+                        <input type="number" id="price" step="0.01" min="0" value="0" th:field="*{price}"
+                               class="form-control"
+                               placeholder="How do you call your creation?" required>
+                    </div>
+
+                    <span class="has-error text-danger" th:if="${#fields.hasErrors('price')}"
+                          th:errors="*{price}"></span>
                 </div>
 
                 <div class="form-group form-check form-switch">

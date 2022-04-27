@@ -1,7 +1,5 @@
 package dev.drawethree.LicenseSystem.controller;
 
-import dev.drawethree.LicenseSystem.license.model.License;
-import dev.drawethree.LicenseSystem.license.service.LicenseService;
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import dev.drawethree.LicenseSystem.software.model.Software;
 import dev.drawethree.LicenseSystem.software.service.SoftwareService;
@@ -26,14 +24,12 @@ public class AdminController {
 
 	private final SecurityService securityService;
 	private final UserService userService;
-	private final LicenseService licenseService;
 	private final SoftwareService softwareService;
 	private final UserValidator userValidator;
 
-	public AdminController(UserService userService, SecurityService securityService, LicenseService licenseService, SoftwareService softwareService, UserValidator userValidator) {
+	public AdminController(UserService userService, SecurityService securityService, SoftwareService softwareService, UserValidator userValidator) {
 		this.securityService = securityService;
 		this.userService = userService;
-		this.licenseService = licenseService;
 		this.softwareService = softwareService;
 		this.userValidator = userValidator;
 	}

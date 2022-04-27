@@ -2,14 +2,12 @@ package dev.drawethree.LicenseSystem.software.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +30,9 @@ public class Software {
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "price", nullable = false)
+    private double price;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

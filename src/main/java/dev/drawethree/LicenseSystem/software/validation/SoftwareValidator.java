@@ -29,12 +29,18 @@ public class SoftwareValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "field.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "field.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "field.required");
 
         Optional<Software> optionalSoftware = softwareService.findByName(software.getName());
 
-        // Update check
+        // Check for existing softwares by name
         if (optionalSoftware.isPresent() && optionalSoftware.get().getId() != software.getId()) {
             errors.rejectValue("name", "software.name.taken");
+        }
+
+        // Price check
+        if (software.getPrice() < 0.0) {
+            errors.rejectValue("price", "software.price.invalid");
         }
     }
 

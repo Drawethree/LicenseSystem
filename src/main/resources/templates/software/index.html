@@ -44,8 +44,9 @@
                 <tr>
                     <th><i class="fa-solid fa-gear"></i>&nbsp;Name</th>
                     <th><i class="fa-solid fa-pen-to-square"></i>&nbsp;Description</th>
+                    <th><i class="fa-solid fa-money-bill"></i>&nbsp;Price</th>
                     <th><i class="fa-solid fa-calendar-days"></i>&nbsp;Created At</th>
-                    <th><i class="fa-solid fa-stopwatch"></i>&nbsp;Licenses Left</th>
+                    <th><i class="fa-solid fa-stopwatch"></i>&nbsp;Licenses</th>
                     <th><i class="fa-solid fa-eye"></i>&nbsp;Public Visibility</th>
                     <th><i class="fa-solid fa-bars"></i>&nbsp;Action</th>
                 </tr>
@@ -54,6 +55,7 @@
                 <tr th:each="software : ${softwares}">
                     <td th:text="${software.name}"></td>
                     <td th:text="${software.description}"></td>
+                    <td th:text="'€' + ${software.price}"></td>
                     <td th:text="${#temporals.format(software.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${software.getLicenses().size() + ' / 25'}"></td>
                     <td th:text="${software.isVisible() ? 'Visible' : 'Not Visible'}"></td>

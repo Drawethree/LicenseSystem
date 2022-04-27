@@ -107,7 +107,7 @@ public class SoftwareController {
         Software software = softwareOptional.get();
 
         if (!software.getCreator().equals(user) && !user.isAdmin()) {
-            return "redirect:/error/error-403";
+            return "redirect:/error/error-401";
         }
 
         model.addAttribute("software", software);
@@ -137,12 +137,13 @@ public class SoftwareController {
         Software software = optionalSoftware.get();
 
         if (!software.getCreator().equals(user) && !user.isAdmin()) {
-            return "redirect:/error/error-403";
+            return "redirect:/error/error-401";
         }
 
         software.setName(tempSoftware.getName());
         software.setDescription(tempSoftware.getDescription());
         software.setVisible(tempSoftware.isVisible());
+        software.setPrice(tempSoftware.getPrice());
 
         softwareService.updateSoftware(software);
 
@@ -167,7 +168,7 @@ public class SoftwareController {
         Software software = softwareOptional.get();
 
         if (!software.getCreator().equals(currentUser) && !currentUser.isAdmin()) {
-            return "redirect:/error/error-403";
+            return "redirect:/error/error-401";
         }
 
         softwareService.deleteSoftwareById(id);

@@ -105,11 +105,11 @@ public class LicenseController {
 
         redirectAttributes.addFlashAttribute("success", "Successfully created new license for " + license.getSoftware().getName() + ".");
 
-        return "redirect:/software";
+        return "redirect:/software/licenses?softwareId=" + license.getSoftware().getId();
     }
 
     @GetMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('CREATOR', 'ADMIN')")
     public String deleteLicense(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
 
         User currentUser = securityService.getCurrentUser();
@@ -123,15 +123,17 @@ public class LicenseController {
 
         License license = licenseOptional.get();
 
-        if (!license.getSoftware().getCreator().equals(currentUser) && !currentUser.isAdmin()) {
-            return "redirect:/error/error-403";
+        Software software = license.getSoftware();
+
+        if (!software.getCreator().equals(currentUser) && !currentUser.isAdmin()) {
+            return "redirect:/error/error-401";
         }
 
         licenseService.deleteById(id);
 
         redirectAttributes.addFlashAttribute("success", "Successfully deleted license.");
 
-        return "redirect:/software";
+        return "redirect:/software/licenses?softwareId=" + software.getId();
     }
 
     @GetMapping("/activate")

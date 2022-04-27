@@ -34,7 +34,8 @@
 <main>
     <div class="container">
         <div class="px-4 py-5 my-5 text-center">
-            <img class="img-fluid" th:src="@{/images/logo.png}" alt="" src="../static/images/logo.png"/>
+            <img class="img-fluid" th:src="@{/images/logo.png}" alt="" style="max-width: 25%"
+                 src="../static/images/logo.png"/>
 
             <h1 class="display-5 fw-bold">Admin Panel</h1>
 
@@ -47,14 +48,10 @@
                         <a href="#" th:href="@{/admin/users}"
                            class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-right-to-bracket"></i>&nbsp;Manage Users</a>
-                        <!-- MANAGE SOFTWARES -->
+                        <!-- MANAGE SOFTWARE -->
                         <a href="#" th:href="@{/admin/software}"
                            class="btn btn-outline-primary btn-lg"><i
                                 class="fa-solid fa-user-plus"></i>&nbsp;Manage Software</a>
-                        <!-- MANAGE LICENSES -->
-                        <a href="#" th:href="@{/admin/licenses}"
-                           class="btn btn-outline-primary btn-lg"><i
-                                class="fa-solid fa-key"></i>&nbsp;Manage Licenses</a>
                     </div>
                 </div>
             </div>

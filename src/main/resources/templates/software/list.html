@@ -37,6 +37,8 @@
                                                                th:text="'&nbsp;Created By: ' + ${software.creator.username}"></small>
                         <i class="fa-solid fa-address-card"></i><small class="text-muted"
                                                                        th:text="'&nbsp;' + ${software.getActiveLicenses().size()} + ' Active Licenses'"></small>
+                        <i class="fa-solid fa-money-bill"></i><small class="text-muted"
+                                                                     th:text="'&nbsp;Price: €' + ${software.getPrice()}"></small>
                     </div>
                 </div>
                 <hr/>
