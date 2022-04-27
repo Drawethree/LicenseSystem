@@ -1,9 +1,7 @@
-package dev.drawethree.LicenseSystem.software.model;
+package dev.drawethree.LicenseSystem.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import dev.drawethree.LicenseSystem.license.model.LicenseDTO;
-import dev.drawethree.LicenseSystem.user.model.UserDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;

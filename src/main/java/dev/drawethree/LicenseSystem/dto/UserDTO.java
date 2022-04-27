@@ -1,4 +1,4 @@
-package dev.drawethree.LicenseSystem.user.model;
+package dev.drawethree.LicenseSystem.dto;
 
 import lombok.Data;
 

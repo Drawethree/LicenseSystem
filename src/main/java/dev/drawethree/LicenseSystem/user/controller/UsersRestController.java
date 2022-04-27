@@ -2,13 +2,11 @@ package dev.drawethree.LicenseSystem.user.controller;
 
 import dev.drawethree.LicenseSystem.exception.UserNotFoundException;
 import dev.drawethree.LicenseSystem.software.model.Software;
-import dev.drawethree.LicenseSystem.software.model.SoftwareDTO;
+import dev.drawethree.LicenseSystem.dto.SoftwareDTO;
 import dev.drawethree.LicenseSystem.user.model.User;
-import dev.drawethree.LicenseSystem.user.model.UserDTO;
-import dev.drawethree.LicenseSystem.user.repository.UserRepository;
+import dev.drawethree.LicenseSystem.dto.UserDTO;
 import dev.drawethree.LicenseSystem.user.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

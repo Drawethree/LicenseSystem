@@ -1,17 +1,15 @@
 package dev.drawethree.LicenseSystem.license.controller;
 
-import dev.drawethree.LicenseSystem.exception.LicenseAlreadyActivatedException;
 import dev.drawethree.LicenseSystem.exception.LicenseNotFoundException;
 import dev.drawethree.LicenseSystem.exception.NotAuthorizedException;
 import dev.drawethree.LicenseSystem.license.model.License;
-import dev.drawethree.LicenseSystem.license.model.LicenseDTO;
+import dev.drawethree.LicenseSystem.dto.LicenseDTO;
 import dev.drawethree.LicenseSystem.license.service.LicenseService;
 import dev.drawethree.LicenseSystem.security.service.SecurityService;
 import dev.drawethree.LicenseSystem.user.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

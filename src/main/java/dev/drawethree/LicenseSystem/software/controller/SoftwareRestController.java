@@ -2,7 +2,7 @@ package dev.drawethree.LicenseSystem.software.controller;
 
 import dev.drawethree.LicenseSystem.exception.SoftwareNotFoundException;
 import dev.drawethree.LicenseSystem.software.model.Software;
-import dev.drawethree.LicenseSystem.software.model.SoftwareDTO;
+import dev.drawethree.LicenseSystem.dto.SoftwareDTO;
 import dev.drawethree.LicenseSystem.software.service.SoftwareService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
