@@ -68,29 +68,6 @@ public class LicenseRestController {
         return new ResponseEntity<>(convertToDto(license), HttpStatus.OK);
     }
 
-    /*@PostMapping("/activate")
-    public ResponseEntity<LicenseDTO> activateLicense(@RequestParam("licenseKey") String licenseKey) {
-
-        Optional<License> licenseOptional = licenseService.findByLicenseKey(licenseKey);
-
-        if (licenseOptional.isEmpty()) {
-            throw new LicenseNotFoundException("License with key=" + licenseKey + " not found.");
-        }
-
-        License license = licenseOptional.get();
-
-        if (license.getLicenseUser() != null) {
-            throw new LicenseAlreadyActivatedException("License is already activated.");
-        }
-
-        User authUser = securityService.getCurrentUser();
-
-        license.setLicenseUser(authUser);
-        licenseService.save(license);
-
-        return new ResponseEntity<>(convertToDto(license), HttpStatus.CREATED);
-    }*/
-
     private LicenseDTO convertToDto(License license) {
         return modelMapper.map(license, LicenseDTO.class);
     }

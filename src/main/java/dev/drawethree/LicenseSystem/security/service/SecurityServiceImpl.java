@@ -56,7 +56,6 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    @Transactional
     public User getCurrentUser() {
         try {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

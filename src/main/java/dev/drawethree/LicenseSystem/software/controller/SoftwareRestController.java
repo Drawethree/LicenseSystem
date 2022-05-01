@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "api/v1/software")
 public class SoftwareRestController {
 
-
     private final ModelMapper modelMapper;
 
     private final SoftwareService softwareService;

@@ -18,16 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
     private final UserDetailsService userDetailsService;
 
     public SecurityConfiguration(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -43,17 +37,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasAnyAuthority("ADMIN")
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
+                .loginPage("/login").permitAll()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/").permitAll();
-
+                .logout().logoutSuccessUrl("/").permitAll();
     }
 
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override

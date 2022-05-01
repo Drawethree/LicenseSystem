@@ -1,7 +1,6 @@
 package dev.drawethree.LicenseSystem.software.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.drawethree.LicenseSystem.license.model.License;
 import dev.drawethree.LicenseSystem.user.model.User;
 import lombok.*;
@@ -49,33 +48,8 @@ public class Software {
     @JsonBackReference
     private User creator;
 
-    @JsonIgnore
     public List<License> getActiveLicenses() {
         return this.licenses.stream().filter(License::isActive).collect(Collectors.toList());
     }
-
-    /*public void addLicense(License license) {
-
-        if (this.licenses == null) {
-            this.licenses = new ArrayList<>();
-        }
-
-        license.setSoftware(this);
-        licenses.add(license);
-    }
-
-    public void removeLicense(License license) {
-
-        if (this.licenses == null) {
-            this.licenses = new ArrayList<>();
-        }
-
-        if (!this.licenses.contains(license)) {
-            return;
-        }
-
-        license.setSoftware(null);
-        licenses.remove(license);
-    }*/
 
 }

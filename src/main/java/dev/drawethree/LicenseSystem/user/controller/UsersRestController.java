@@ -71,7 +71,7 @@ public class UsersRestController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
-        List<UserDTO> usersDTO = userService.findAll().stream().filter(user -> !user.isAdmin()).map(this::convertToDto).collect(Collectors.toList());
+        List<UserDTO> usersDTO = userService.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(usersDTO, HttpStatus.OK);
     }
 

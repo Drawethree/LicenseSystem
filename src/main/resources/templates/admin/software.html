@@ -42,7 +42,7 @@
                 <tr th:each="software : ${softwares}">
                     <td th:text="${software.name}"></td>
                     <td th:text="${software.description}"></td>
-                    <td th:text="${software.price}"></td>
+                    <td th:text="'€' + ${software.price}"></td>
                     <td th:text="${#temporals.format(software.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${software.getLicenses().size() + ' / 25'}"></td>
                     <td th:text="${software.isVisible() ? 'Visible' : 'Not Visible'}"></td>
