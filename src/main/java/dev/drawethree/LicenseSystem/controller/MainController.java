@@ -17,13 +17,10 @@ public class MainController {
 
     private final SoftwareService softwareService;
 
-    private final SecurityService securityService;
-
-    public MainController(UserService userService, LicenseService licenseService, SoftwareService softwareService, SecurityService securityService) {
+    public MainController(UserService userService, LicenseService licenseService, SoftwareService softwareService) {
         this.userService = userService;
         this.licenseService = licenseService;
         this.softwareService = softwareService;
-        this.securityService = securityService;
     }
 
     @GetMapping({"/", "home"})
