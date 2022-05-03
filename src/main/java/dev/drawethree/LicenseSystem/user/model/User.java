@@ -20,9 +20,9 @@ import java.util.Objects;
 @Setter
 public class User {
 
-    public static long MAX_SOFTWARE_PER_CREATOR = 5;
+    public static final long MAX_SOFTWARE_PER_CREATOR = 5;
 
-    public static long MAX_LICENSES_PER_SOFTWARE = 25;
+    public static final long MAX_LICENSES_PER_SOFTWARE = 25;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

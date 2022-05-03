@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/v1/users")
-public class UsersRestController {
+public class UserRestController {
 
     private final UserService userService;
 
     private final ModelMapper modelMapper;
 
-    public UsersRestController(UserService userService, ModelMapper modelMapper) {
+    public UserRestController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
