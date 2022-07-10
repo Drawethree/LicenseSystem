@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="icon" type="image/png" href="images/favicon.ico" />
+
+    <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
+
+    <title>Public Software</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<main>
+    <!-- th:if="${software_page.content.size() > 0} -->
+    <div class="container px-4 py-5 my-5">
+        <div class="col-md-12 mx-auto">
+            <h3 class="text-center">Public Software</h3>
+            <hr>
+            <p class="h5 text-center text-danger" th:if="${software_page.content.isEmpty()}">No public software
+                found.</p>
+            <div class="row-md-12" th:each="software : ${software_page.content}">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-header" th:text="${software.name}"></h2>
+                        <p class="card-text" th:text="${software.description}"></p>
+                        <i class="fa-solid fa-user"></i><small class="text-muted"
+                                                               th:text="'&nbsp;Created By: ' + ${software.creator.username}"></small>
+                        <i class="fa-solid fa-address-card"></i><small class="text-muted"
+                                                                       th:text="'&nbsp;' + ${software.getActiveLicenses().size()} + ' Active Licenses'"></small>
+                        <i class="fa-solid fa-money-bill"></i><small class="text-muted"
+                                                                     th:text="'&nbsp;Price: €' + ${software.getPrice()}"></small>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+
+            <div class="row mx-auto" th:if="${software_page.totalPages > 0}">
+                <ul class="pagination pagination-lg" th:each="pageNumber : ${page_numbers}">
+                    <li class="page-item">
+                        <a class="page-link" href="#" th:href="@{/software/list(page=${pageNumber})}"
+                           th:text="${pageNumber}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

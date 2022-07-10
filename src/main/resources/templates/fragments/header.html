@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/21b84ee89a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" th:fragment="header">
+    <a class="navbar-brand">License System</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItems"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarItems">
+
+
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item nav-link">
+                <a class="nav-link" href="/" th:href="@{/}"><i class="fa-solid fa-house"></i>&nbsp;Home</a>
+            </li>
+
+            <div sec:authorize="isAuthenticated() && !hasAuthority('ADMIN')">
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/user}" class="nav-link"><i
+                            class="fa-solid fa-user"></i>&nbsp;User Panel</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAuthority('ADMIN')">
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/admin}" class="nav-link"><i
+                            class="fa-solid fa-user"></i>&nbsp;Admin Panel</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/software/create}" class="nav-link"><i
+                            class="fa-solid fa-circle-plus"></i>&nbsp;Create New Software</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')">
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/license/create}" class="nav-link"><i
+                            class="fa-solid fa-circle-plus"></i>&nbsp;Create New License</a>
+                </li>
+            </div>
+
+            <div sec:authorize="hasAnyAuthority('CUSTOMER', 'ADMIN')">
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/license/activate}" class="nav-link"><i
+                            class="fa-solid fa-key"></i>&nbsp;Activate License</a>
+                </li>
+            </div>
+
+            <li class="nav-item nav-link">
+                <a href="#" th:href="@{/software/list}" class="nav-link"><i
+                        class="fa-solid fa-list"></i>&nbsp;Public Software</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+
+
+            <div sec:authorize="!isAuthenticated()">
+
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/login}" class="nav-link"><i
+                            class="fa-solid fa-right-to-bracket"></i>&nbsp;Login</a>
+                </li>
+            </div>
+
+            <div sec:authorize="!isAuthenticated()">
+                <li class="nav-item nav-link">
+                    <a href="#" th:href="@{/register}" class="nav-link"><i
+                            class="fa-solid fa-user-plus"></i>&nbsp;Register</a>
+                </li>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <li class="nav-item nav-link mr">
+                    <form id="logout" method="POST" th:action="@{/logout}">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button class="btn btn-outline-danger btn-lg" type="submit"><i
+                                class="fa-solid fa-person-running"></i>&nbsp;Logout
+                        </button>
+                        <!--<a th:href="@{/logout}" th:action="@{/logout}" th:method="post" class="nav-link"><i
+                                class="fa-solid fa-person-running"></i>&nbsp;Logout</a>-->
+                    </form>
+                </li>
+            </div>
+        </ul>
+
+    </div>
+</nav>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>
