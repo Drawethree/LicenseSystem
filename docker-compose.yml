@@ -22,5 +22,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/license_system?createDatabaseIfNotExist=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&characterSetResults=utf-8&connectionCollation=utf8_general_ci
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SERVER_PORT: 8080
+      SERVER_ERROR_PATH: "/error"
+      SERVLET_CONTEXT_PATH: "/test"
+      JPA_DIALECT: "org.hibernate.dialect.MySQL8Dialect"
+      JPA_DDL_AUTO: update
 volumes:
   mysql-data:
